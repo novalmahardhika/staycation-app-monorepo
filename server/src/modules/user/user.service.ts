@@ -1,7 +1,7 @@
-import { User } from './user.entity';
 import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
+import { User } from 'src/database/entities/user.entity';
 
 @Injectable()
 export class UserService {
@@ -14,7 +14,7 @@ export class UserService {
     return this.userRepository.find();
   }
 
-  async findById(id: number) {
+  async findById(id: string) {
     const user = this.userRepository.findOneBy({ id });
     return user;
   }
@@ -24,11 +24,11 @@ export class UserService {
     return this.userRepository.save(user);
   }
 
-  async update(id: number, payload: any) {
+  async update(id: string, payload: any) {
     return this.userRepository.update(id, payload);
   }
 
-  async delete(id: number) {
+  async delete(id: string) {
     return this.userRepository.delete({ id });
   }
 }
