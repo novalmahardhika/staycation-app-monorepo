@@ -4,20 +4,20 @@ import { BaseEntity } from './base.entity';
 @Entity()
 export class User extends BaseEntity {
   @Column()
-  firstName: string;
+  firstName!: string;
 
   @Column()
-  lastName: string;
+  lastName!: string;
 
   @Column()
-  email: string;
+  email!: string;
 
   @Column()
-  password: string;
+  password!: string;
 
   @Column()
-  phone: string;
+  phone!: string;
 
   @Column({ type: 'text' })
-  address: string;
+  address!: string;
 }

@@ -11,6 +11,8 @@ services:
       - '5432:5432'
     volumes:
       - ./pgdata:/var/lib/postgresql/data
+    networks:
+      - staycation_network
 
   pgadmin:
     image: dpage/pgadmin4
@@ -23,6 +25,8 @@ services:
       - '5050:80'
     depends_on:
       - db
+    networks:
+      - staycation_network
 
   server:
     build:
@@ -36,11 +40,11 @@ services:
       - /app/node_modules
     env_file:
       - ./server/.env
-    environment:
-      - DB_HOST=db
     command: npm run start:dev
     depends_on:
       - db
+    networks:
+      - staycation_network
 
   client:
     build:
@@ -53,3 +57,9 @@ services:
       - ./client:/app
       - /app/node_modules
     command: npm run dev
+    networks:
+      - staycation_network
+
+networks:
+  staycation_network:
+    driver: bridge
