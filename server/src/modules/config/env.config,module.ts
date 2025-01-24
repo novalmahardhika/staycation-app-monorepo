@@ -1,11 +1,12 @@
+import typeorm from '../../database/typeorm.config';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
-      envFilePath: '.env',
       isGlobal: true,
+      load: [typeorm],
     }),
   ],
   controllers: [],

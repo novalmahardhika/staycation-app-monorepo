@@ -10,10 +10,10 @@ export abstract class BaseEntity {
   id!: string;
 
   @CreateDateColumn({ type: 'timestamptz' })
-  readonly createdAt!: Date;
+  createdAt!: Date;
 
   @UpdateDateColumn({ type: 'timestamptz' })
-  readonly updatedAt!: Date;
+  updatedAt!: Date;
 
   @DeleteDateColumn({ type: 'timestamptz' })
   deletedAt!: Date;
