@@ -1,6 +1,7 @@
 import { registerAs } from '@nestjs/config';
 import { config as dotenvConfig } from 'dotenv';
 import { DataSource, type DataSourceOptions } from 'typeorm';
+import { SeederOptions } from 'typeorm-extension';
 
 dotenvConfig({ path: '.env' });
 
@@ -11,12 +12,16 @@ const config = {
   username: `${process.env.POSTGRES_USER}`,
   password: `${process.env.POSTGRES_PASSWORD}`,
   database: `${process.env.POSTGRES_DATABASE}`,
-  entities: [`${__dirname}/entities/*.entity.ts`],
-  migrations: [`${__dirname}/migrations/**`],
   autoLoadEntities: true,
   synchronize: false,
+  entities: [`src/database/entities/*.entity{.ts,.js}`],
+  migrations: [`src/database/migrations/*{.ts,.js}`],
+  seeds: ['src/database/seeders/*.seeder{.ts,.js}'],
+  factories: ['src/database/factories/*.factory{.ts,.js}'],
 };
 
 export default registerAs('typeorm', () => config);
 
-export const connectionSource = new DataSource(config as DataSourceOptions);
+export const datasource = new DataSource(
+  config as DataSourceOptions & SeederOptions,
+);
