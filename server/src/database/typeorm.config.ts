@@ -14,8 +14,8 @@ const config = {
   database: `${process.env.POSTGRES_DATABASE}`,
   autoLoadEntities: true,
   synchronize: false,
-  entities: [`src/database/entities/*.entity{.ts,.js}`],
-  migrations: [`src/database/migrations/*{.ts,.js}`],
+  entities: [`${__dirname}/entities/*.entity.ts`],
+  migrations: [`${__dirname}/migrations/**`],
   seeds: ['src/database/seeders/*.seeder{.ts,.js}'],
   factories: ['src/database/factories/*.factory{.ts,.js}'],
 };
