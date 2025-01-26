@@ -6,7 +6,7 @@ import { setSeederFactory } from 'typeorm-extension';
 
 export default setSeederFactory(User, async () => {
   const user = new User();
-  const { street, city, zipCode } = faker.location
+  const { street, city, zipCode, } = faker.location
 
   user.firstName = faker.person.firstName(),
   user.lastName = faker.person.lastName(),
