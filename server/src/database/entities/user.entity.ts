@@ -1,23 +1,30 @@
 import { Entity, Column } from 'typeorm';
 import { BaseEntity } from './base.entity';
 
-@Entity()
+export const roleList = ['USER', 'ADMIN'] as const;
+
+export type Role = (typeof roleList)[number];
+
+@Entity({ name: 'Users' })
 export class User extends BaseEntity {
-  @Column()
+  @Column({ name: 'first_name', length: 30 })
   firstName!: string;
 
-  @Column()
+  @Column({ name: 'last_name', length: 50, nullable: true })
   lastName!: string;
 
-  @Column()
+  @Column({ unique: true })
   email!: string;
 
   @Column()
   password!: string;
 
+  @Column({ enum: roleList, default: roleList[0], nullable: true })
+  role?: Role;
+
   @Column({ nullable: true })
   phone?: string | null;
 
-  @Column({ nullable: true })
-  address?: string;
+  @Column({ type: 'text', nullable: true })
+  address?: string | null;
 }
