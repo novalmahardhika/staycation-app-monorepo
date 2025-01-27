@@ -1,5 +1,6 @@
 import { BaseEntity } from './base.entity';
-import { Column, Entity } from 'typeorm';
+import { Column, Entity, OneToOne } from 'typeorm';
+import { Destination } from './destination.entity';
 
 @Entity({ name: 'detail_destinations' })
 export class DetailDestination extends BaseEntity {
@@ -38,4 +39,7 @@ export class DetailDestination extends BaseEntity {
 
   @Column({ name: 'swimming_pool', type: 'int', nullable: true, default: 0 })
   swimmingPool?: number;
+
+  @OneToOne(() => Destination, (destination) => destination.detail)
+  destination: Destination;
 }

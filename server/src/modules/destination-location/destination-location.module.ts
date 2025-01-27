@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { DetailLocation } from 'src/database/entities/detail-location.entity';
+import { DestinationLocation } from 'src/database/entities/destination-location.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([DetailLocation])],
+  imports: [TypeOrmModule.forFeature([DestinationLocation])],
   controllers: [],
   providers: [],
 })

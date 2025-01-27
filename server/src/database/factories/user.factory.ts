@@ -12,6 +12,7 @@ export default setSeederFactory(User, async () => {
   user.lastName = faker.person.lastName(),
   user.email = faker.internet.email(),
   user.password = await hash('user12345',10),
+  user.image = faker.image.avatar(),
   user.phone = faker.phone.number();
   user.address = `${street()} ${zipCode()}, ${city()} `
 
