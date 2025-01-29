@@ -1,10 +1,10 @@
 import { BaseEntity } from './base.entity';
 import { Column, Entity, JoinColumn, ManyToOne, OneToOne } from 'typeorm';
-import { DetailDestination } from './detail-destination.entity';
-import { DestinationLocation } from './destination-location.entity';
+import { HomestayLocation } from './homestay-location.entity';
+import { HomestayDetail } from './homestay-detail.entity';
 
-@Entity({ name: 'destinations' })
-export class Destination extends BaseEntity {
+@Entity({ name: 'homestays' })
+export class Homestay extends BaseEntity {
   @Column({ type: 'varchar' })
   name!: string;
 
@@ -20,12 +20,12 @@ export class Destination extends BaseEntity {
   @Column({ type: 'boolean', nullable: true, default: false })
   isPopular?: boolean | false;
 
-  @ManyToOne(() => DestinationLocation, (location) => location.destination, {
+  @ManyToOne(() => HomestayLocation, (location) => location.destination, {
     nullable: true,
   })
-  address?: DestinationLocation;
+  address?: HomestayLocation;
 
-  @OneToOne(() => DetailDestination, { cascade: true })
+  @OneToOne(() => HomestayDetail, { cascade: true })
   @JoinColumn()
-  detail!: DetailDestination;
+  detail!: HomestayDetail;
 }

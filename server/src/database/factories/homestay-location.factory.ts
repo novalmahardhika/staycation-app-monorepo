@@ -1,9 +1,9 @@
 import { faker } from '@faker-js/faker';
 import { setSeederFactory } from 'typeorm-extension';
-import { DestinationLocation } from '../entities/destination-location.entity';
+import { HomestayLocation } from '../entities/homestay-location.entity';
 
-export default setSeederFactory(DestinationLocation, async () => {
-  const location = new DestinationLocation();
+export default setSeederFactory(HomestayLocation, async () => {
+  const location = new HomestayLocation();
   const {  city, zipCode, country } = faker.location
 
   location.city = city()

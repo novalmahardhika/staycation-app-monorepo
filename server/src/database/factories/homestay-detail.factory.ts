@@ -1,10 +1,10 @@
 import { faker } from '@faker-js/faker';
 import { setSeederFactory } from 'typeorm-extension';
-import { DetailDestination } from '../entities/detail-destination.entity';
+import { HomestayDetail } from '../entities/homestay-detail.entity';
 import { generateNumber } from '../../utils/generate-number';
 
-export default setSeederFactory(DetailDestination, async () => {
-  const detail = new DetailDestination();
+export default setSeederFactory(HomestayDetail, async () => {
+  const detail = new HomestayDetail();
 
   detail.owner = faker.person.fullName()
   detail.images = ['https://rb.gy/t85903','https://rb.gy/fr3j9t','https://rb.gy/0wt3us'],

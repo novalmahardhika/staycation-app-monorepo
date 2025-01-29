@@ -1,9 +1,9 @@
 import { BaseEntity } from './base.entity';
 import { Column, Entity, OneToOne } from 'typeorm';
-import { Destination } from './destination.entity';
+import { Homestay } from './homestay.entity';
 
-@Entity({ name: 'detail_destinations' })
-export class DetailDestination extends BaseEntity {
+@Entity({ name: 'homestay_details' })
+export class HomestayDetail extends BaseEntity {
   @Column({ type: 'varchar', nullable: true })
   owner?: string | null;
 
@@ -40,6 +40,6 @@ export class DetailDestination extends BaseEntity {
   @Column({ name: 'swimming_pool', type: 'int', nullable: true, default: 0 })
   swimmingPool?: number;
 
-  @OneToOne(() => Destination, (destination) => destination.detail)
-  destination: Destination;
+  @OneToOne(() => Homestay, (homestay) => homestay.detail)
+  destination: Homestay;
 }
