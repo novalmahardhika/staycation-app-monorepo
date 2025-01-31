@@ -1,19 +1,20 @@
 import { cn } from '@/lib/utils'
-import { Button } from './button'
+import { Link } from 'react-router'
 
 type LogoProps = {
   className?: string
+  href: string
 }
 
-const Logo = ({ className }: LogoProps) => {
+const Logo = ({ className, href }: LogoProps) => {
   return (
-    <Button
-      variant='ghost'
+    <Link
+      to={href}
       className={cn('flex gap-0 text-2xl font-medium', className)}
     >
       <span className='text-blue-600'>Stay</span>
-      <span className='text-blue-950'>cation</span>
-    </Button>
+      <span className='text-blue-950'>cation.</span>
+    </Link>
   )
 }
 

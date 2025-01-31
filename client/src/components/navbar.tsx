@@ -1,13 +1,14 @@
 import Logo from '@/components/ui/logo'
 import { cn } from '@/lib/utils'
 import { ReactNode } from 'react'
+import { Link } from 'react-router'
 
 export default function Navbar() {
   return (
-    <header className=' h-16 border-b shadow-sm'>
-      <nav className=' h-full flex items-center max-w-7xl mx-auto px-3 justify-between'>
-        <Logo />
-        <span className='flex h-full items-center space-x-3'>
+    <header className='fixed w-full h-16 bg-white border-b shadow-sm'>
+      <nav className='container flex items-center justify-between h-full'>
+        <Logo href='/' />
+        <span className='flex items-center h-full space-x-6'>
           <ItemNavbar href='#'>Home</ItemNavbar>
           <ItemNavbar href='#'>Browse by</ItemNavbar>
           <ItemNavbar href='#'>Stories</ItemNavbar>
@@ -26,14 +27,14 @@ type ItemNavbarProps = {
 
 function ItemNavbar({ children, className, href }: ItemNavbarProps) {
   return (
-    <a
-      href={href}
+    <Link
+      to={href}
       className={cn(
-        'text-[15px] text-blue-950 hover:text-blue-600 duration-200',
+        'text-[15px] text-slate-900 hover:text-blue-600 duration-200',
         className
       )}
     >
       {children}
-    </a>
+    </Link>
   )
 }
