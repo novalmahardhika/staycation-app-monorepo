@@ -5,7 +5,7 @@ import { Link } from 'react-router'
 
 export default function Navbar() {
   return (
-    <header className='fixed w-full h-16 bg-white border-b shadow-sm'>
+    <header className='fixed z-50 w-full h-16 bg-white border-b shadow-sm'>
       <nav className='container flex items-center justify-between h-full'>
         <Logo href='/' />
         <span className='flex items-center h-full space-x-6'>

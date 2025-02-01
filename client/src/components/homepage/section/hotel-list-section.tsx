@@ -27,7 +27,7 @@ export default function HotelListSection() {
             return <CustomCarouselItem {...props} />
           })}
         </CarouselContent>
-        <div className='absolute z-30 flex justify-end w-full mt-5 space-x-3'>
+        <div className='absolute z-50 flex w-full mt-5 space-x-3 md:justify-end'>
           <CarouselPrevious className='static rounded-md' />
           <CarouselNext className='static rounded-md' />
         </div>
