@@ -11,7 +11,7 @@ import { Card } from '../../ui/card'
 
 export default function HouseListSection() {
   const { data: items } = useHomestayQuery<Homestay[]>()
-  const homestays = items?.data.slice(0, 5) || []
+  const homestays = items?.data.slice(0, 10) || []
 
   return (
     <section className='grid gap-5'>
@@ -27,8 +27,10 @@ export default function HouseListSection() {
             return <CustomCarouselItem {...props} />
           })}
         </CarouselContent>
-        <CarouselPrevious />
-        <CarouselNext />
+        <div className='absolute z-30 flex justify-end w-full mt-5 space-x-3'>
+          <CarouselPrevious className='static rounded-md' />
+          <CarouselNext className='static rounded-md' />
+        </div>
       </Carousel>
     </section>
   )
