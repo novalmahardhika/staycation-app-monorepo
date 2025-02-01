@@ -1,5 +1,6 @@
-import { Button } from '../ui/button'
-import { IconType } from '@/utils/types'
+import { Button } from '@/components/ui/button'
+import { IconType } from '@/types/base-type'
+
 import { Camera, Luggage, MapPin } from 'lucide-react'
 
 export default function HeroSection() {

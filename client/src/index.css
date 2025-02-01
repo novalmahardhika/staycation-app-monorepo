@@ -72,3 +72,7 @@
 .container {
   @apply px-3 mx-auto max-w-7xl;
 }
+
+.title-section {
+  @apply text-xl font-medium text-blue-950;
+}
