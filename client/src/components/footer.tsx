@@ -6,8 +6,8 @@ export default function Footer() {
 
   return (
     <footer className='grid gap-10 py-10 my-5 border-t'>
-      <div className='container flex flex-wrap justify-between'>
-        <span className='space-y-1 max-w-64'>
+      <div className='container grid gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5'>
+        <span className='space-y-1 lg:col-span-2 max-w-64'>
           <Logo />
           <p className='text-sm font-light text-gray-400'>
             We kaboom your beauty holiday instantly and memorable.

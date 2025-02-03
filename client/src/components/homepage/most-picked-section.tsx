@@ -11,7 +11,7 @@ export default function MostPickedSection() {
   return (
     <section className='grid gap-5'>
       <h2 className='title-section'>Most Picked</h2>
-      <div className='grid grid-cols-3 gap-6'>
+      <div className='grid gap-6 md:grid-cols-3'>
         {homestays.map((item, index) => {
           const props = {
             ...item,
@@ -24,7 +24,8 @@ export default function MostPickedSection() {
               {...props}
               key={`most-picked-${index}`}
               className={cn({
-                'h-full row-span-2': index === 0,
+                'h-44 md:h-full md:row-span-1 md:col-span-2 lg:row-span-2 lg:col-span-1':
+                  index === 0,
                 'h-44': index !== 0,
               })}
             />
@@ -54,14 +55,14 @@ function CardItem({image, className,  name, country, city, price, href }: CardIt
         alt={name}
         className='absolute object-cover w-full h-full duration-200 -z-50 group-hover:scale-110'
       />
-      <span className='absolute right-0 p-1.5 px-3 text-sm bg-rose-500 rounded-bl-md text-white'>
+      <span className='absolute right-0 p-1.5 px-3 text-xs md:text-sm bg-rose-500 rounded-bl-md text-white'>
         <span className='font-semibold'>
           {formatCurrency(price)} 
         </span> per Night 
       </span>
       <Link to={href} className='flex flex-col justify-end h-full p-4 text-white'>
-        <h3>{name}</h3>
-        <span className='text-sm'>{`${city}, ${country}`}</span>
+        <h3 className='text-sm md:text-base'>{name}</h3>
+        <span className='text-xs md:text-sm'>{`${city}, ${country}`}</span>
       </Link>
       <span className='absolute inset-0 w-full h-full bottom-full bg-black/25 -z-40'></span>
     </article>

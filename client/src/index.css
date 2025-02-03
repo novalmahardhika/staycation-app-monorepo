@@ -74,5 +74,5 @@
 }
 
 .title-section {
-  @apply text-xl font-medium text-blue-950;
+  @apply text-lg font-medium md:text-xl text-blue-950;
 }

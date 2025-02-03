@@ -9,6 +9,7 @@ import {
   SheetContent,
   SheetFooter,
   SheetHeader,
+  SheetTitle,
   SheetTrigger,
 } from './ui/sheet'
 
@@ -36,9 +37,11 @@ export default function Navbar() {
           <SheetTrigger className='md:hidden'>
             <Menu />
           </SheetTrigger>
-          <SheetContent className='flex flex-col justify-between'>
-            <SheetHeader className='space-y-7'>
-              <Logo />
+          <SheetContent side='right' className='flex flex-col justify-between'>
+            <SheetHeader>
+              <SheetTitle>
+                <Logo />
+              </SheetTitle>
               <div className='flex flex-col items-start space-y-3'>
                 <ItemNavbar href='#'>Home</ItemNavbar>
                 <ItemNavbar href='#'>Browse by</ItemNavbar>
