@@ -1,11 +1,10 @@
-import { useHomestayQuery } from '@/hooks/useQuery/useHomestayQuery'
+import { useHomestayQuery } from '@/hooks/query/useQuery/use-homestay-query'
 import { cn } from '@/lib/utils'
-import { Homestay } from '@/types/homestay-type'
 import { formatCurrency } from '@/utils/helper'
 import { Link } from 'react-router'
 
 export default function MostPickedSection() {
-  const { data: items } = useHomestayQuery<Homestay[]>()
+  const { data: items } = useHomestayQuery()
   const homestays = items?.data.slice(0, 5) || []
 
   return (

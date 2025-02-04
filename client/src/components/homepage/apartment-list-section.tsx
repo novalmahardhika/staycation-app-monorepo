@@ -1,9 +1,8 @@
-import { useHomestayQuery } from '@/hooks/useQuery/useHomestayQuery'
-import { Homestay } from '@/types/homestay-type'
 import CarouselListItem from '@/components/ui/carousel-list-item'
+import { useHomestayQuery } from '@/hooks/query/useQuery/use-homestay-query'
 
 export default function ApartmentListSection() {
-  const { data: items } = useHomestayQuery<Homestay[]>()
+  const { data: items } = useHomestayQuery()
   const homestays = items?.data.slice(0, 10) || []
 
   return (

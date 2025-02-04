@@ -1,7 +1,7 @@
 import Logo from '@/components/ui/logo'
 import { cn } from '@/lib/utils'
 import { ReactNode } from 'react'
-import { Link } from 'react-router'
+import { Link, useNavigate } from 'react-router'
 import { Button } from './ui/button'
 import { LogIn, Menu } from 'lucide-react'
 import {
@@ -14,6 +14,7 @@ import {
 } from './ui/sheet'
 
 export default function Navbar() {
+  const navigate = useNavigate()
   return (
     <header className='fixed z-50 w-full h-16 bg-white border-b shadow-sm'>
       <nav className='container flex items-center justify-between h-full'>
@@ -26,6 +27,7 @@ export default function Navbar() {
           <Button
             variant='outline'
             className='gap-0.5 font-medium tracking-wide text-blue-600 border-blue-600 hover:text-blue-800'
+            onClick={() => navigate('/signIn')}
           >
             Login
             <LogIn />
@@ -53,6 +55,7 @@ export default function Navbar() {
               <Button
                 variant='outline'
                 className='gap-0.5 font-medium tracking-wide text-blue-600 border-blue-600 hover:text-blue-800 w-full'
+                onClick={() => navigate('/signIn')}
               >
                 Login
                 <LogIn />
