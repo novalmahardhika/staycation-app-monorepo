@@ -8,7 +8,7 @@ import { toast } from 'sonner'
 type AuthContextType = {
   user: User | null
   token: string | null
-  signIn: (payload: SignInSchema) => void
+  signIn: (payload: SignInSchema) => Promise<void>
   signOut: () => void
 }
 
@@ -16,7 +16,7 @@ type AuthContextType = {
 export const AuthContext = createContext<AuthContextType>({
   user: null,
   token: null,
-  signIn: () => {},
+  signIn: async () => {},
   signOut: () => {},
 })
 
@@ -29,6 +29,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (token) {
       fetchUser()
     }
+
+    return () => setUser(null)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token])
 
@@ -52,14 +54,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const accessToken = res.data.accessToken
       setToken(accessToken)
       setItem('token', accessToken)
-      fetchUser()
     } catch (error) {
       console.log(error)
-      toast.success('Login fail')
     }
   }
   const signOut = () => {
     removeItem('token')
+    setToken(null)
+    setUser(null)
     window.location.reload()
   }
 

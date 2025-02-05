@@ -38,7 +38,7 @@ export default function Navbar() {
           ) : (
             <Button
               variant='outline'
-              className='gap-0.5 font-medium tracking-wide text-blue-600 border-blue-600 hover:text-blue-800'
+              className='gap-0.5 font-medium tracking-wide text-red-600 border-red-600 hover:text-red-800'
               onClick={() => signOut()}
             >
               Logout
@@ -75,7 +75,7 @@ export default function Navbar() {
               ) : (
                 <Button
                   variant='outline'
-                  className='gap-0.5 font-medium tracking-wide text-blue-600 border-blue-600 hover:text-blue-800'
+                  className='gap-0.5 font-medium tracking-wide text-red-600 border-red-600 hover:text-red-800 w-full'
                   onClick={() => signOut()}
                 >
                   Logout

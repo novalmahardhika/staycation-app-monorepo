@@ -14,7 +14,7 @@ export default function MostPickedSection() {
         {homestays.map((item, index) => {
           const props = {
             ...item,
-            href: '/',
+            href: `/homesstays/${item.id}`,
             city: item.address.city,
             country: item.address.country,
           }
