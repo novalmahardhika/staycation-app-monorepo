@@ -5,21 +5,24 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import { signInSchema, SignInSchema } from '@/schemas/auth-schema'
+import {
+  signInDefaultValues,
+  signInSchema,
+  SignInSchema,
+} from '@/schemas/auth-schema'
 import { Form } from '@/components/ui/form'
 import { Button } from '@/components/ui/button'
 import { InputField } from '@/components/ui/custom-field'
 import { useZodForm } from '@/hooks/use-zod-form'
 import { Link } from 'react-router'
+import { useAuth } from '@/hooks/use-auth'
 
 export default function SignInPage() {
-  const form = useZodForm(signInSchema, {
-    email: '',
-    password: '',
-  })
+  const { signIn } = useAuth()
+  const form = useZodForm(signInSchema, signInDefaultValues)
 
   const onSubmitHandler = (value: SignInSchema) => {
-    console.log(value)
+    signIn(value)
   }
 
   return (

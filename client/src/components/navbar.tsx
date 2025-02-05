@@ -3,7 +3,7 @@ import { cn } from '@/lib/utils'
 import { ReactNode } from 'react'
 import { Link, useNavigate } from 'react-router'
 import { Button } from './ui/button'
-import { LogIn, Menu } from 'lucide-react'
+import { Menu } from 'lucide-react'
 import {
   Sheet,
   SheetContent,
@@ -12,8 +12,10 @@ import {
   SheetTitle,
   SheetTrigger,
 } from './ui/sheet'
+import { useAuth } from '@/hooks/use-auth'
 
 export default function Navbar() {
+  const { token, signOut } = useAuth()
   const navigate = useNavigate()
   return (
     <header className='fixed z-50 w-full h-16 bg-white border-b shadow-sm'>
@@ -24,14 +26,24 @@ export default function Navbar() {
           <ItemNavbar href='#'>Browse by</ItemNavbar>
           <ItemNavbar href='#'>Stories</ItemNavbar>
           <ItemNavbar href='#'>Agents</ItemNavbar>
-          <Button
-            variant='outline'
-            className='gap-0.5 font-medium tracking-wide text-blue-600 border-blue-600 hover:text-blue-800'
-            onClick={() => navigate('/signIn')}
-          >
-            Login
-            <LogIn />
-          </Button>
+
+          {!token ? (
+            <Button
+              variant='outline'
+              className='gap-0.5 font-medium tracking-wide text-blue-600 border-blue-600 hover:text-blue-800'
+              onClick={() => navigate('/signIn')}
+            >
+              Login
+            </Button>
+          ) : (
+            <Button
+              variant='outline'
+              className='gap-0.5 font-medium tracking-wide text-blue-600 border-blue-600 hover:text-blue-800'
+              onClick={() => signOut()}
+            >
+              Logout
+            </Button>
+          )}
         </span>
 
         {/* sidebar */}
@@ -52,14 +64,23 @@ export default function Navbar() {
               </div>
             </SheetHeader>
             <SheetFooter>
-              <Button
-                variant='outline'
-                className='gap-0.5 font-medium tracking-wide text-blue-600 border-blue-600 hover:text-blue-800 w-full'
-                onClick={() => navigate('/signIn')}
-              >
-                Login
-                <LogIn />
-              </Button>
+              {!token ? (
+                <Button
+                  variant='outline'
+                  className='gap-0.5 font-medium tracking-wide text-blue-600 border-blue-600 hover:text-blue-800 w-full'
+                  onClick={() => navigate('/signIn')}
+                >
+                  Login
+                </Button>
+              ) : (
+                <Button
+                  variant='outline'
+                  className='gap-0.5 font-medium tracking-wide text-blue-600 border-blue-600 hover:text-blue-800'
+                  onClick={() => signOut()}
+                >
+                  Logout
+                </Button>
+              )}
             </SheetFooter>
           </SheetContent>
         </Sheet>

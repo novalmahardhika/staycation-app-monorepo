@@ -6,7 +6,8 @@ export const signInSchema = z.object({
     .email({ message: 'please enter a valid email address in the format' }),
   password: z
     .string()
-    .min(8, { message: 'password must be at least 8 character' }),
+    .min(8, { message: 'password must be at least 8 character' })
+    .trim(),
 })
 
 export const signUpSchema = z.object({
@@ -31,3 +32,14 @@ export const signUpSchema = z.object({
 
 export type SignInSchema = z.infer<typeof signInSchema>
 export type SignUpSchema = z.infer<typeof signUpSchema>
+
+export const signInDefaultValues: SignInSchema = {
+  email: '',
+  password: '',
+}
+
+export const signUpDefaultValues: SignUpSchema = {
+  firstName: '',
+  email: '',
+  password: '',
+}

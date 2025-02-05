@@ -8,20 +8,34 @@ import {
 } from '@/components/ui/card'
 import { InputField } from '@/components/ui/custom-field'
 import { Form } from '@/components/ui/form'
+import { useSignUpMutation } from '@/hooks/query/useMutation/use-auth-mutation'
 import { useZodForm } from '@/hooks/use-zod-form'
-import { SignUpSchema, signUpSchema } from '@/schemas/auth-schema'
+import {
+  signUpDefaultValues,
+  SignUpSchema,
+  signUpSchema,
+} from '@/schemas/auth-schema'
 import { Link } from 'react-router'
+import { toast } from 'sonner'
 
 export default function SignUpPage() {
-  const form = useZodForm(signUpSchema, {
-    firstName: '',
-    lastName: '',
-    email: '',
-    password: '',
-  })
+  const form = useZodForm(signUpSchema, signUpDefaultValues)
+  const { mutateAsync } = useSignUpMutation()
 
   const onSubmitHandler = (value: SignUpSchema) => {
-    console.log(value)
+    toast.promise(mutateAsync(value), {
+      loading: 'Loading...',
+      error: (err) => `Sign Up failed: ${err.message}`,
+      success: () => {
+        form.reset({
+          firstName: '',
+          lastName: '',
+          email: '',
+          password: '',
+        })
+        return `Sign Up successfully`
+      },
+    })
   }
 
   return (
