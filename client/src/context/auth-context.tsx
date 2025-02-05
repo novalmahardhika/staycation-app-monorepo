@@ -3,7 +3,6 @@ import { SignInSchema } from '@/schemas/auth-schema'
 import { AuthSignIn, User } from '@/types/auth-type'
 import { api, ResponseApi } from '@/utils/api'
 import { createContext, ReactNode, useEffect, useState } from 'react'
-import { useNavigate } from 'react-router'
 import { toast } from 'sonner'
 
 type AuthContextType = {
@@ -13,6 +12,7 @@ type AuthContextType = {
   signOut: () => void
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const AuthContext = createContext<AuthContextType>({
   user: null,
   token: null,
@@ -24,7 +24,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const { setItem, removeItem, getItem } = useLocalStorage()
   const [token, setToken] = useState<string | null>(getItem('token'))
   const [user, setUser] = useState<User | null>(null)
-  const navigate = useNavigate()
 
   useEffect(() => {
     if (token) {
@@ -61,7 +60,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
   const signOut = () => {
     removeItem('token')
-    navigate(0)
+    window.location.reload()
   }
 
   const fetchUser = async () => {
