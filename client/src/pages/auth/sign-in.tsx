@@ -14,11 +14,13 @@ import { Form } from '@/components/ui/form'
 import { Button } from '@/components/ui/button'
 import { InputField } from '@/components/ui/custom-field'
 import { useZodForm } from '@/hooks/use-zod-form'
-import { Link } from 'react-router'
+import { Link, useNavigate } from 'react-router'
 import { useAuth } from '@/hooks/use-auth'
+import { GalleryVerticalEnd } from 'lucide-react'
 
 export default function SignInPage() {
   const { signIn } = useAuth()
+  const navigate = useNavigate()
   const form = useZodForm(signInSchema, signInDefaultValues)
 
   const onSubmitHandler = (value: SignInSchema) => {
@@ -26,9 +28,14 @@ export default function SignInPage() {
   }
 
   return (
-    <Card className='w-full max-w-[420px]'>
+    <Card>
       <CardHeader>
-        <CardTitle className='text-2xl'>Sign In.</CardTitle>
+        <CardTitle className='flex items-center justify-between'>
+          <h1 className='text-2xl'>Sign Up.</h1>
+          <Button variant={'outline'} onClick={() => navigate('/')}>
+            <GalleryVerticalEnd />
+          </Button>
+        </CardTitle>
         <CardDescription>lorem ipsum dolor sit amet.</CardDescription>
       </CardHeader>
 

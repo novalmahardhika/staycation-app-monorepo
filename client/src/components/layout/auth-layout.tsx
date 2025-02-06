@@ -13,7 +13,7 @@ export default function AuthLayout() {
   }, [navigate, token])
 
   return (
-    <section className='flex items-center justify-center h-screen px-3'>
+    <section className='flex flex-col  justify-center h-screen px-3 max-w-[430px] mx-auto'>
       <Outlet />
     </section>
   )

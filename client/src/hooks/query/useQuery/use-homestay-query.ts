@@ -1,9 +1,11 @@
-import { Homestay } from '@/types/homestay-type'
+import { Homestay, HomestayDetail } from '@/types/homestay-type'
 import { api, ResponseApi } from '@/utils/api'
-import { QueryOptions, useQuery } from '@tanstack/react-query'
+import { useQuery, UseQueryOptions } from '@tanstack/react-query'
+
+type OptionType<T> = Omit<UseQueryOptions<T>, 'queryKey' | 'queryFn'>
 
 export function useHomestayQuery(
-  options?: QueryOptions<ResponseApi<Homestay[]>>
+  options?: OptionType<ResponseApi<Homestay[]>>
 ) {
   return useQuery({
     queryKey: ['homestays'],
@@ -14,11 +16,12 @@ export function useHomestayQuery(
 
 export function useHomestayIdQuery(
   id: string,
-  options: QueryOptions<ResponseApi<unknown>>
+  options?: Omit<OptionType<ResponseApi<HomestayDetail>>, 'enabled'>
 ) {
   return useQuery({
     queryKey: ['homestays', id],
-    queryFn: () => api<ResponseApi<unknown>>(`/homestays/${id}`),
+    queryFn: () => api<ResponseApi<HomestayDetail>>(`/homestays/${id}`),
+    enabled: !!id,
     ...options,
   })
 }

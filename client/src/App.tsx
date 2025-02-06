@@ -4,12 +4,16 @@ import MainLayout from './components/layout/main-layout'
 import AuthLayout from './components/layout/auth-layout'
 import SignInPage from './pages/auth/sign-in'
 import SignUpPage from './pages/auth/sign-up'
+import HomestayDetailPage from './pages/homestay-detail-page'
+import HomestayPage from './pages/homestays'
 
 function App() {
   return (
     <Routes>
       <Route path='/' element={<MainLayout />}>
         <Route index element={<Homepage />} />
+        <Route path='homestays' element={<HomestayPage />} />
+        <Route path='homestays/:id' element={<HomestayDetailPage />} />
       </Route>
 
       <Route element={<AuthLayout />}>

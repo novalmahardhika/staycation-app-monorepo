@@ -15,10 +15,12 @@ import {
   SignUpSchema,
   signUpSchema,
 } from '@/schemas/auth-schema'
-import { Link } from 'react-router'
+import { GalleryVerticalEnd } from 'lucide-react'
+import { Link, useNavigate } from 'react-router'
 import { toast } from 'sonner'
 
 export default function SignUpPage() {
+  const navigate = useNavigate()
   const form = useZodForm(signUpSchema, signUpDefaultValues)
   const { mutateAsync } = useSignUpMutation()
 
@@ -39,9 +41,14 @@ export default function SignUpPage() {
   }
 
   return (
-    <Card className='w-full max-w-[420px]'>
+    <Card>
       <CardHeader>
-        <CardTitle className='text-2xl'>Sign Up.</CardTitle>
+        <CardTitle className='flex items-center justify-between'>
+          <h1 className='text-2xl'>Sign Up.</h1>
+          <Button variant={'outline'} onClick={() => navigate('/')}>
+            <GalleryVerticalEnd />
+          </Button>
+        </CardTitle>
         <CardDescription>lorem ipsum dolor sit amet.</CardDescription>
       </CardHeader>
 

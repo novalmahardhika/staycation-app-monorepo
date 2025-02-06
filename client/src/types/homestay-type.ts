@@ -6,6 +6,21 @@ export type HomestayAddress = BaseType & {
   country: string
 }
 
+export type Detail = BaseType & {
+  owner?: string
+  images: string[]
+  description?: string
+  bedroom: number
+  livingRoom: number
+  bathroom: number
+  kitchen: number
+  airConditioner: number
+  refrigerator: number
+  television: number
+  wifi: number
+  swimmingPool: number
+}
+
 export type Homestay = BaseType & {
   id: string
   name: string
@@ -14,4 +29,8 @@ export type Homestay = BaseType & {
   discount?: number
   isPopular: boolean
   address: HomestayAddress
+}
+
+export type HomestayDetail = Homestay & {
+  detail: Detail
 }
