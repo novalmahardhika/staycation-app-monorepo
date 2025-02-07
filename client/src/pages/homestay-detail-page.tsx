@@ -1,4 +1,5 @@
 import DescriptionSection from '@/components/homestay-detail/description-section'
+import FormBookSection from '@/components/homestay-detail/form-book-section'
 import HeaderDetailHomestay from '@/components/homestay-detail/header'
 import ImageDetailSection from '@/components/homestay-detail/image-section'
 import { useHomestayIdQuery } from '@/hooks/query/useQuery/use-homestay-query'
@@ -19,7 +20,7 @@ export default function HomestayDetailPage() {
 
   if (!data) return
 
-  const { name, address, detail } = data.data
+  const { name, address, detail, price } = data.data
   const { city, country } = address
 
   return (
@@ -28,7 +29,7 @@ export default function HomestayDetailPage() {
       <ImageDetailSection images={detail.images} />
       <section className='grid grid-cols-2'>
         <DescriptionSection description={detail.description} />
-        <section>{/* Form Booking */}</section>
+        <FormBookSection price={price} />
       </section>
     </section>
   )
