@@ -68,69 +68,67 @@ export default function FormBookSection({ price }: FormBookSectionProps) {
   }
 
   return (
-    <section className=''>
-      <Card className='max-w-[400px] w-full mx-auto'>
-        <CardHeader>
-          <h3 className='font-semibold text-blue-950'>Start Booking</h3>
-          <h1 className='text-2xl font-medium text-emerald-500'>
-            {formatCurrency(price)}{' '}
-            <span className='font-light text-gray-400'>per night</span>
-          </h1>
-        </CardHeader>
+    <Card className='max-w-[400px] w-full mx-auto p-6'>
+      <CardHeader>
+        <h3 className='font-semibold text-blue-950'>Start Booking</h3>
+        <h1 className='text-2xl font-medium text-emerald-500'>
+          {formatCurrency(price)}{' '}
+          <span className='font-light text-gray-400'>per night</span>
+        </h1>
+      </CardHeader>
 
-        <CardContent>
-          <Form {...form}>
-            <form
-              onSubmit={form.handleSubmit(onSubmitHandler)}
-              className='space-y-3'
-            >
-              <div className='relative'>
-                <InputField
-                  label='How long you will stay ?'
-                  control={form.control}
-                  name='totalDuration'
-                  className='text-center'
-                />
-                <div className='absolute bottom-0 flex justify-between w-full '>
-                  <Button
-                    onClick={onMinusDuration}
-                    type='button'
-                    className='bg-red-500 rounded-none rounded-l-md'
-                  >
-                    <Minus />
-                  </Button>
-                  <Button
-                    onClick={onAddDuration}
-                    type='button'
-                    className='rounded-none bg-emerald-500 rounded-r-md'
-                  >
-                    <Plus />
-                  </Button>
-                </div>
-              </div>
-
-              <DateRangePickerField
+      <CardContent>
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(onSubmitHandler)}
+            className='space-y-3'
+          >
+            <div className='relative'>
+              <InputField
+                label='How long you will stay ?'
                 control={form.control}
-                name='date'
-                label='Pick a date'
-                valueClassName='text-center'
+                name='totalDuration'
+                className='text-center'
               />
+              <div className='absolute bottom-0 flex justify-between w-full '>
+                <Button
+                  onClick={onMinusDuration}
+                  type='button'
+                  className='bg-red-500 rounded-none rounded-l-md hover:bg-red-600'
+                >
+                  <Minus />
+                </Button>
+                <Button
+                  onClick={onAddDuration}
+                  type='button'
+                  className='rounded-none bg-emerald-500 rounded-r-md hover:bg-emerald-600'
+                >
+                  <Plus />
+                </Button>
+              </div>
+            </div>
 
-              <span className='text-sm font-light text-gray-400'>
-                You will pay{' '}
-                <span className='font-semibold text-blue-950'>
-                  {formatCurrency(totalPrice)}
-                </span>{' '}
-                per{' '}
-                <span className='font-semibold text-blue-950'>
-                  {totalDuration}
-                </span>
+            <DateRangePickerField
+              control={form.control}
+              name='date'
+              label='Pick a date'
+              valueClassName='text-center'
+            />
+
+            <span className='text-sm font-light text-gray-400'>
+              You will pay{' '}
+              <span className='font-semibold text-blue-950'>
+                {formatCurrency(totalPrice)}
+              </span>{' '}
+              per{' '}
+              <span className='font-semibold text-blue-950'>
+                {totalDuration}
               </span>
-              <Button className='w-full'>Continue to Book</Button>
-            </form>
-          </Form>
-        </CardContent>
-      </Card>
-    </section>
+            </span>
+            <Button className='w-full'>Continue to Book</Button>
+          </form>
+        </Form>
+      </CardContent>
+    </Card>
   )
 }
