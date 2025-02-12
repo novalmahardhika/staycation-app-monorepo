@@ -15,7 +15,7 @@ export default function HeaderDetailHomestay({
   return (
     <header>
       <BreadcrumbArrow items={BREADCRUMB_DETAIL_HOMESTAY} />
-      <div className='text-center '>
+      <div className='text-center'>
         <h1 className='text-2xl font-bold text-blue-900'>{name}</h1>
         <p className='text-gray-400'>{`${city}, ${country}`}</p>
       </div>

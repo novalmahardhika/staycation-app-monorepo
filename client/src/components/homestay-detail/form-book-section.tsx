@@ -68,7 +68,7 @@ export default function FormBookSection({ price }: FormBookSectionProps) {
   }
 
   return (
-    <Card className='max-w-[400px] w-full mx-auto p-6'>
+    <Card className='max-w-[400px] w-full mx-auto p-6 shadow-sm'>
       <CardHeader>
         <h3 className='font-semibold text-blue-950'>Start Booking</h3>
         <h1 className='text-2xl font-medium text-emerald-500'>

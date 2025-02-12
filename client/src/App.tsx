@@ -6,6 +6,8 @@ import SignInPage from './pages/auth/sign-in'
 import SignUpPage from './pages/auth/sign-up'
 import HomestayDetailPage from './pages/homestay-detail-page'
 import HomestayPage from './pages/homestays'
+import BookingLayout from './components/layout/booking-layout'
+import BookingPage from './pages/booking-page'
 
 function App() {
   return (
@@ -14,6 +16,10 @@ function App() {
         <Route index element={<Homepage />} />
         <Route path='homestays' element={<HomestayPage />} />
         <Route path='homestays/:id' element={<HomestayDetailPage />} />
+      </Route>
+
+      <Route path='/booking' element={<BookingLayout />}>
+        <Route index element={<BookingPage />} />
       </Route>
 
       <Route element={<AuthLayout />}>
