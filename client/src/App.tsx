@@ -8,6 +8,8 @@ import HomestayDetailPage from './pages/homestay-detail-page'
 import HomestayPage from './pages/homestays'
 import BookingLayout from './components/layout/booking-layout'
 import BookingPage from './pages/booking-page'
+import BookingPaymentPage from './pages/booking-payment-page'
+import BookingSuccessPage from './pages/booking-success-page'
 
 function App() {
   return (
@@ -20,6 +22,8 @@ function App() {
 
       <Route path='/booking' element={<BookingLayout />}>
         <Route index element={<BookingPage />} />
+        <Route path='payment' element={<BookingPaymentPage />} />
+        <Route path='success' element={<BookingSuccessPage />} />
       </Route>
 
       <Route element={<AuthLayout />}>
