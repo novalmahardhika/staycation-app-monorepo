@@ -1,7 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
-// import { ZodValidationPipe } from 'nestjs-zod';
 import { CustomZodValidationPipe } from './common/pipes/zod-pipe';
 
 async function bootstrap() {
@@ -10,6 +9,7 @@ async function bootstrap() {
   const getPort = configService.get('PORT');
   const PORT = parseInt(getPort, 10) || 8080;
 
+  app.enableCors();
   app.useGlobalPipes(new CustomZodValidationPipe());
 
   await app.listen(PORT, () => {

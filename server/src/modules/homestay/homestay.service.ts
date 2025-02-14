@@ -11,15 +11,12 @@ export class HomestayService {
   ) {}
 
   async findAll() {
-    return await this.homestayRepository.find({
-      relations: { address: true },
-    });
+    return await this.homestayRepository.find();
   }
 
   async findById(id: string) {
     const user = await this.homestayRepository.findOne({
       where: { id },
-      relations: { address: true, detail: true },
     });
     if (!user) {
       throw new NotFoundException('User not found');

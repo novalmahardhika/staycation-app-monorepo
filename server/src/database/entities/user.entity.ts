@@ -1,5 +1,7 @@
 import { BaseEntity } from './base.entity';
-import { Entity, Column } from 'typeorm';
+import { Entity, Column, OneToMany } from 'typeorm';
+import { Booking } from './booking.entity';
+import { Notification } from './notification.entity';
 
 export const roleList = ['USER', 'ADMIN'] as const;
 export type Role = (typeof roleList)[number];
@@ -21,7 +23,7 @@ export class User extends BaseEntity {
   @Column({ type: 'varchar', nullable: true })
   image?: string | null;
 
-  @Column({ enum: roleList, default: roleList[0], nullable: true })
+  @Column({ enum: roleList, default: 'USER', nullable: true })
   role?: Role;
 
   @Column({ type: 'varchar', nullable: true })
@@ -29,4 +31,10 @@ export class User extends BaseEntity {
 
   @Column({ type: 'text', nullable: true })
   address?: string | null;
+
+  @OneToMany(() => Booking, (booking) => booking.bookedBy)
+  bookings?: Booking[];
+
+  @OneToMany(() => Notification, (notification) => notification.user)
+  notifications?: Notification[];
 }
