@@ -1,7 +1,7 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
 
-export class Init1739541790059 implements MigrationInterface {
-    name = 'Init1739541790059'
+export class Init1739635266527 implements MigrationInterface {
+    name = 'Init1739635266527'
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(`CREATE TABLE "homestays" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "createdAt" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "deletedAt" TIMESTAMP WITH TIME ZONE, "name" character varying NOT NULL, "images" text NOT NULL, "price" integer NOT NULL, "description" text, "discount" integer DEFAULT '0', "isPopular" boolean DEFAULT false, "city" character varying NOT NULL, "country" character varying NOT NULL, "facilities" jsonb NOT NULL, CONSTRAINT "PK_45f294901ecbc4f0664e75d2eb4" PRIMARY KEY ("id"))`);
