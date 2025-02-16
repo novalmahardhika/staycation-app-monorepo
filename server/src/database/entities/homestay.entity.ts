@@ -1,6 +1,7 @@
 import { BaseEntity } from './base.entity';
-import { Column, Entity, OneToMany } from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 import { Booking } from './booking.entity';
+import { Category } from './category.entity';
 
 export type Facility = {
   type: string;
@@ -39,4 +40,7 @@ export class Homestay extends BaseEntity {
 
   @OneToMany(() => Booking, (booking) => booking.homestay)
   bookings?: Booking[];
+
+  @ManyToOne(() => Category, (category) => category.homestays)
+  category!: Category;
 }

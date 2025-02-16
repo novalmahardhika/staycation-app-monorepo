@@ -4,11 +4,11 @@ import { Homestay } from '../entities/homestay.entity';
 import { faker } from '@faker-js/faker';
 import { generateNumber } from '../../utils/generate-number';
 import { FACILITIES, IMAGES } from '../../utils/constanst';
-import { shuffleImage } from '../../utils/shuffle-array';
+import { shuffleArray } from '../../utils/shuffle-array';
 
 export default setSeederFactory(Homestay, async () => {
   const homestay = new Homestay();
-  const images = shuffleImage(IMAGES).slice(0,3)
+  const images = shuffleArray(IMAGES).slice(0,3)
   const facilities = FACILITIES.map((item)=> ({...item, qty: generateNumber(0, 10)}))
   
   homestay.name = faker.location.continent()
@@ -18,6 +18,7 @@ export default setSeederFactory(Homestay, async () => {
   homestay.country = faker.location.country()
   homestay.images = images
   homestay.facilities = facilities
+  homestay.description = faker.lorem.paragraphs({ min: 3, max: 5 }, '/n')
   
   return homestay;
 });

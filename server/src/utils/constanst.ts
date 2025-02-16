@@ -64,3 +64,5 @@ export const FACILITIES: Facility[] = [
     qty: 0,
   },
 ];
+
+export const CATEGORIES = ['HOTEL', 'VILLA', 'APARTMENT', 'HOUSE'];
