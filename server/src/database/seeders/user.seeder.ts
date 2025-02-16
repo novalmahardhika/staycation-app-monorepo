@@ -10,7 +10,7 @@ export default class UserSeeder implements Seeder {
     const admin = {
       firstName: 'admin',
       email: 'admin@admin.com',
-      password: await hash('admin',10),
+      password: await hash('admin123',10),
     }
     const checkAdmin = await userRepository.findOneBy({ email: 'admin@admin.com' }) 
     if (!checkAdmin) {

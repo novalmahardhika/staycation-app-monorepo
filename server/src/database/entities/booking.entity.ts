@@ -10,7 +10,7 @@ export const statusBooking = [
   'FINISH',
   'EXPIRED',
   'CANCEL',
-];
+] as const;
 
 export type StatusBooking = (typeof statusBooking)[number];
 
@@ -23,7 +23,7 @@ export type DetailBooking = {
 
 @Entity({ name: 'bookings' })
 export class Booking extends BaseEntity {
-  @Column({ type: 'enum', enum: statusBooking, default: 'NEW' })
+  @Column({ type: 'enum', enum: statusBooking })
   status!: StatusBooking;
 
   @Column({ type: 'date' })

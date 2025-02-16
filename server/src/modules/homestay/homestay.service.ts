@@ -11,7 +11,10 @@ export class HomestayService {
   ) {}
 
   async findAll() {
-    return await this.homestayRepository.find();
+    return await this.homestayRepository.find({
+      select: ['id', 'name', 'price', 'isPopular', 'images', 'city', 'country'],
+      relations: ['category'],
+    });
   }
 
   async findById(id: string) {

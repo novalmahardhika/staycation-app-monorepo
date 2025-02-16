@@ -4,8 +4,6 @@ import { Homestay } from '../entities/homestay.entity';
 import { Category } from '../entities/category.entity';
 import { shuffleArray } from '../../utils/shuffle-array';
 
-
-
 export default class HomestaySeeder implements Seeder {
   async run(datasource: DataSource, factoryManager: SeederFactoryManager) {
     const homestayRepository = datasource.getRepository(Homestay)
