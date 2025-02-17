@@ -1,6 +1,5 @@
 import { statusBooking } from 'src/database/entities/booking.entity';
 import { z } from 'zod';
-
 import { createZodDto } from 'nestjs-zod';
 
 const detailBookingSchema = z
@@ -13,8 +12,8 @@ const detailBookingSchema = z
   .strict();
 
 export const createBookingSchema = z.object({
-  bookedById: z.string(),
-  homestayId: z.string(),
+  bookedById: z.string().uuid(),
+  homestayId: z.string().uuid(),
   status: z.enum(statusBooking),
   startDate: z.coerce.date(),
   endDate: z.coerce.date(),

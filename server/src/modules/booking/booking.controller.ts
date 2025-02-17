@@ -4,7 +4,6 @@ import {
   Delete,
   Get,
   HttpStatus,
-  NotFoundException,
   Param,
   Patch,
   Post,
@@ -13,16 +12,10 @@ import {
 import { BookingService } from './booking.service';
 import { Response } from 'express';
 import { CreateBookingDto, UpdateBookingDto } from './booking.dto';
-import { UserService } from '../user/user.service';
-import { HomestayService } from '../homestay/homestay.service';
 
 @Controller('bookings')
 export class BookingController {
-  constructor(
-    private bookingService: BookingService,
-    private userService: UserService,
-    private homestayService: HomestayService,
-  ) {}
+  constructor(private bookingService: BookingService) {}
 
   @Get()
   async getAll(@Res() res: Response) {
@@ -36,21 +29,7 @@ export class BookingController {
 
   @Post()
   async create(@Body() body: CreateBookingDto, @Res() res: Response) {
-    const bookedBy = await this.userService.findById(body.bookedById);
-
-    if (!bookedBy) {
-      throw new NotFoundException('Booked by id not found');
-    }
-    const homestay = await this.homestayService.findById(body.homestayId);
-    if (!homestay) {
-      throw new NotFoundException('Homestay id not found');
-    }
-    await this.bookingService.create({
-      ...body,
-      bookedBy,
-      homestay,
-    });
-
+    await this.bookingService.create(body);
     return res.status(HttpStatus.CREATED).json({
       status: 'CREATED',
       message: 'Create booking success',
@@ -60,14 +39,10 @@ export class BookingController {
   @Patch(':id')
   async update(
     @Body() body: UpdateBookingDto,
-    @Param() params: { id: string },
+    @Param('id') id: string,
     @Res() res: Response,
   ) {
-    const booking = this.bookingService.findById(params.id);
-    if (!booking) {
-      throw new NotFoundException('Booking not found');
-    }
-    await this.bookingService.update(params.id, body);
+    await this.bookingService.update(id, body);
     return res.status(HttpStatus.OK).json({
       status: 'OK',
       message: 'Update booking success',
@@ -75,8 +50,8 @@ export class BookingController {
   }
 
   @Delete(':id')
-  async delete(@Param() params: { id: string }, @Res() res: Response) {
-    await this.bookingService.delete(params.id);
+  async delete(@Param('id') id: string, @Res() res: Response) {
+    await this.bookingService.delete(id);
     return res.status(HttpStatus.OK).json({
       status: 'OK',
       message: 'Delete booking success',

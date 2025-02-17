@@ -18,18 +18,24 @@ export class HomestayService {
   }
 
   async findById(id: string) {
-    const user = await this.homestayRepository.findOne({
+    return await this.homestayRepository.findOneBy({
+      id,
+    });
+  }
+
+  async findThrowById(id: string) {
+    const homestay = await this.homestayRepository.findOne({
       where: { id },
     });
-    if (!user) {
-      throw new NotFoundException('User not found');
+    if (!homestay) {
+      throw new NotFoundException('Homestay not found');
     }
-    return user;
+    return homestay;
   }
 
   async create(payload: any) {
-    const user = this.homestayRepository.create(payload);
-    return this.homestayRepository.save(user);
+    const homestay = this.homestayRepository.create(payload);
+    return this.homestayRepository.save(homestay);
   }
 
   async update(id: string, payload: any) {
