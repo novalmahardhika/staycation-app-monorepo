@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Booking } from 'src/database/entities/booking.entity';
 import { Repository } from 'typeorm';
@@ -45,15 +49,30 @@ export class BookingService {
     return this.bookingRepository.save(booking);
   }
 
-  async update(id: string, payload: UpdateBookingSchema) {
-    const booking = await this.findThrowById(id);
-    await this.bookingRepository.update(id, payload);
-    return booking;
+  async update(id: string, payload: UpdateBookingSchema, userId: string) {
+    await this.findThrowById(id);
+    await this.accessBooking(userId, id);
+    return await this.bookingRepository.update(id, payload);
   }
 
-  async delete(id: string) {
-    const booking = await this.findThrowById(id);
-    await this.bookingRepository.delete({ id });
-    return booking;
+  async delete(id: string, userId: string) {
+    await this.findThrowById(id);
+    await this.accessBooking(userId, id);
+    return await this.bookingRepository.delete({ id });
+  }
+
+  async accessBooking(userId: string, bookingId: string) {
+    const access = await this.bookingRepository.exists({
+      where: {
+        id: bookingId,
+        bookedBy: {
+          id: userId,
+        },
+      },
+    });
+    if (!access) {
+      throw new ForbiddenException('User booking access denied');
+    }
+    return access;
   }
 }

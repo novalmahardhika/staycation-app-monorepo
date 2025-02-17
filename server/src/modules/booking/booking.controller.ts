@@ -7,11 +7,13 @@ import {
   Param,
   Patch,
   Post,
+  Req,
   Res,
 } from '@nestjs/common';
 import { BookingService } from './booking.service';
 import { Response } from 'express';
 import { CreateBookingDto, UpdateBookingDto } from './booking.dto';
+import { User } from 'src/database/entities/user.entity';
 
 @Controller('bookings')
 export class BookingController {
@@ -40,9 +42,12 @@ export class BookingController {
   async update(
     @Body() body: UpdateBookingDto,
     @Param('id') id: string,
+    @Req() req: Request & { user: User },
     @Res() res: Response,
   ) {
-    await this.bookingService.update(id, body);
+    const { id: userId } = req.user;
+    console.log(userId);
+    await this.bookingService.update(id, body, userId);
     return res.status(HttpStatus.OK).json({
       status: 'OK',
       message: 'Update booking success',
@@ -50,8 +55,13 @@ export class BookingController {
   }
 
   @Delete(':id')
-  async delete(@Param('id') id: string, @Res() res: Response) {
-    await this.bookingService.delete(id);
+  async delete(
+    @Param('id') id: string,
+    @Req() req: Request & { user: User },
+    @Res() res: Response,
+  ) {
+    const { id: userId } = req.user;
+    await this.bookingService.delete(id, userId);
     return res.status(HttpStatus.OK).json({
       status: 'OK',
       message: 'Delete booking success',
