@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   ForbiddenException,
   Injectable,
   NotFoundException,
@@ -27,6 +28,14 @@ export class BookingService {
     return await this.bookingRepository.findOneBy({ id });
   }
 
+  async findManyById(id: string) {
+    return await this.bookingRepository.findBy({
+      bookedBy: {
+        id,
+      },
+    });
+  }
+
   async findThrowById(id: string) {
     const booking = await this.bookingRepository.findOneBy({ id });
     if (!booking) {
@@ -35,10 +44,16 @@ export class BookingService {
     return booking;
   }
 
-  async create(payload: CreateBookingSchema) {
+  async create(payload: CreateBookingSchema, userId: string) {
     const { bookedById, homestayId } = payload;
     const bookedBy = await this.userService.findThrowById(bookedById);
     const homestay = await this.homestayService.findThrowById(homestayId);
+
+    if (bookedBy.id !== userId) {
+      throw new BadRequestException(
+        'User cannot create booking with this bookedById ',
+      );
+    }
 
     const booking = this.bookingRepository.create({
       ...payload,
@@ -50,14 +65,14 @@ export class BookingService {
   }
 
   async update(id: string, payload: UpdateBookingSchema, userId: string) {
-    await this.findThrowById(id);
-    await this.accessBooking(userId, id);
+    const booking = await this.findThrowById(id);
+    await this.accessBooking(userId, booking.id);
     return await this.bookingRepository.update(id, payload);
   }
 
   async delete(id: string, userId: string) {
-    await this.findThrowById(id);
-    await this.accessBooking(userId, id);
+    const booking = await this.findThrowById(id);
+    await this.accessBooking(userId, booking.id);
     return await this.bookingRepository.delete({ id });
   }
 

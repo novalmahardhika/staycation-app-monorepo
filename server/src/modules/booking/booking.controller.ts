@@ -7,19 +7,20 @@ import {
   Param,
   Patch,
   Post,
-  Req,
   Res,
 } from '@nestjs/common';
 import { BookingService } from './booking.service';
 import { Response } from 'express';
 import { CreateBookingDto, UpdateBookingDto } from './booking.dto';
-import { User } from 'src/database/entities/user.entity';
+import { ReqUser } from 'src/common/decorators/user.decorator';
+import { Admin } from 'src/common/decorators/admin.decorator';
 
 @Controller('bookings')
 export class BookingController {
   constructor(private bookingService: BookingService) {}
 
   @Get()
+  @Admin()
   async getAll(@Res() res: Response) {
     const bookings = await this.bookingService.findAll();
     return res.status(HttpStatus.OK).json({
@@ -30,8 +31,13 @@ export class BookingController {
   }
 
   @Post()
-  async create(@Body() body: CreateBookingDto, @Res() res: Response) {
-    await this.bookingService.create(body);
+  async create(
+    @Body() body: CreateBookingDto,
+    @ReqUser() user: ReqUser,
+    @Res() res: Response,
+  ) {
+    const { id: userId } = user;
+    await this.bookingService.create(body, userId);
     return res.status(HttpStatus.CREATED).json({
       status: 'CREATED',
       message: 'Create booking success',
@@ -42,11 +48,10 @@ export class BookingController {
   async update(
     @Body() body: UpdateBookingDto,
     @Param('id') id: string,
-    @Req() req: Request & { user: User },
+    @ReqUser() user: ReqUser,
     @Res() res: Response,
   ) {
-    const { id: userId } = req.user;
-    console.log(userId);
+    const { id: userId } = user;
     await this.bookingService.update(id, body, userId);
     return res.status(HttpStatus.OK).json({
       status: 'OK',
@@ -57,14 +62,25 @@ export class BookingController {
   @Delete(':id')
   async delete(
     @Param('id') id: string,
-    @Req() req: Request & { user: User },
+    @ReqUser() user: ReqUser,
     @Res() res: Response,
   ) {
-    const { id: userId } = req.user;
+    const { id: userId } = user;
     await this.bookingService.delete(id, userId);
     return res.status(HttpStatus.OK).json({
       status: 'OK',
       message: 'Delete booking success',
+    });
+  }
+
+  @Get('me')
+  async getMe(@ReqUser() user: ReqUser, @Res() res: Response) {
+    const { id: userId } = user;
+    const bookings = await this.bookingService.findManyById(userId);
+    return res.status(HttpStatus.OK).json({
+      status: 'OK',
+      message: 'Get all bookings success',
+      data: bookings,
     });
   }
 }

@@ -27,7 +27,11 @@ export class AuthService {
     const verifyToken = await this.jwtService.verify(token, {
       secret: 'secret',
     });
-    return await this.userService.findThrowById(verifyToken.sub);
+    return {
+      id: verifyToken.sub,
+      email: verifyToken.email,
+      role: verifyToken.role,
+    };
   }
 
   async signIn(email: string, password: string) {
@@ -41,7 +45,7 @@ export class AuthService {
       throw new UnauthorizedException('Please check email or password');
     }
 
-    const payload = { sub: user.id, email: user.email };
+    const payload = { sub: user.id, email: user.email, role: user.role };
     const token = await this.signJwtToken(payload);
     return {
       accessToken: token,
