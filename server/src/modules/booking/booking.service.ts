@@ -1,12 +1,13 @@
 import {
   BadRequestException,
+  ConflictException,
   ForbiddenException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
 import { InjectEntityManager, InjectRepository } from '@nestjs/typeorm';
 import { Booking } from 'src/database/entities/booking.entity';
-import { EntityManager, Repository } from 'typeorm';
+import { EntityManager, Equal, Not, Repository } from 'typeorm';
 import { UserService } from '../user/user.service';
 import { HomestayService } from '../homestay/homestay.service';
 import { CreateBookingSchema, UpdateBookingSchema } from './booking.dto';
@@ -50,14 +51,16 @@ export class BookingService {
 
   async create(payload: CreateBookingSchema, userId: string) {
     const { bookedById, homestayId } = payload;
+
     if (bookedById !== userId) {
       throw new BadRequestException(
-        'User cannot create booking with this bookedById ',
+        'User cannot create booking with this bookedById',
       );
     }
 
     const bookedBy = await this.userService.findThrowById(bookedById);
     const homestay = await this.homestayService.findThrowById(homestayId);
+    await this.checkAlreadyBooking(bookedBy.id, homestay.id);
 
     await this.entity.transaction(async (manager: EntityManager) => {
       const booking = this.bookingRepository.create({
@@ -104,5 +107,21 @@ export class BookingService {
       throw new ForbiddenException('User booking access denied');
     }
     return access;
+  }
+
+  async checkAlreadyBooking(userId: string, homestayId: string) {
+    const booking = await this.bookingRepository.existsBy({
+      bookedBy: {
+        id: userId,
+      },
+      homestay: {
+        id: homestayId,
+      },
+      status: Not(Equal('FINISH')),
+    });
+    if (booking) {
+      throw new ConflictException('Already booking this homestay');
+    }
+    return booking;
   }
 }
