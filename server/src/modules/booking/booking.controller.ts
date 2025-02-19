@@ -76,7 +76,7 @@ export class BookingController {
   @Get('me')
   async getMe(@ReqUser() user: ReqUser, @Res() res: Response) {
     const { id: userId } = user;
-    const bookings = await this.bookingService.findManyById(userId);
+    const bookings = await this.bookingService.findManyByUserId(userId);
     return res.status(HttpStatus.OK).json({
       status: 'OK',
       message: 'Get all bookings success',

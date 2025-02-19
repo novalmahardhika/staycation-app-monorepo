@@ -28,10 +28,10 @@ export class BookingService {
     return await this.bookingRepository.findOneBy({ id });
   }
 
-  async findManyById(id: string) {
+  async findManyByUserId(userId: string) {
     return await this.bookingRepository.findBy({
       bookedBy: {
-        id,
+        id: userId,
       },
     });
   }
@@ -46,15 +46,15 @@ export class BookingService {
 
   async create(payload: CreateBookingSchema, userId: string) {
     const { bookedById, homestayId } = payload;
-    const bookedBy = await this.userService.findThrowById(bookedById);
-    const homestay = await this.homestayService.findThrowById(homestayId);
 
-    if (bookedBy.id !== userId) {
+    if (bookedById !== userId) {
       throw new BadRequestException(
         'User cannot create booking with this bookedById ',
       );
     }
 
+    const bookedBy = await this.userService.findThrowById(bookedById);
+    const homestay = await this.homestayService.findThrowById(homestayId);
     const booking = this.bookingRepository.create({
       ...payload,
       homestay,

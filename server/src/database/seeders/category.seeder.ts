@@ -1,10 +1,7 @@
 import { DataSource } from 'typeorm';
 import { Seeder, SeederFactoryManager } from 'typeorm-extension';
 import { Category } from '../entities/category.entity';
-import { CATEGORIES } from '../../utils/constanst';
-
-
-
+import { CATEGORIES } from '../../common/constants/seeder.constant';
 export default class CategorySeeder implements Seeder {
   async run(datasource: DataSource, factoryManager: SeederFactoryManager) {
     const categoryRepository = datasource.getRepository(Category)
