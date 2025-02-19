@@ -7,13 +7,13 @@ import {
   Param,
   Patch,
   Post,
-  Req,
   Res,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto, UpdateUserDto } from './user.dto';
 import { Response } from 'express';
 import { Admin } from 'src/common/decorators/admin.decorator';
+import { ReqUser } from 'src/common/decorators/user.decorator';
 
 @Controller('users')
 export class UserController {
@@ -40,13 +40,12 @@ export class UserController {
   }
 
   @Get('/me')
-  async getMe(@Req() req: Request & { user: any }, @Res() res: Response) {
-    const token = req.user;
-    const user = await this.userService.findById(token.sub);
+  async getMe(@ReqUser() user: ReqUser, @Res() res: Response) {
+    const currentUser = await this.userService.findById(user.id);
     return res.status(HttpStatus.OK).json({
       status: 'OK',
       message: 'Get current user success',
-      data: user,
+      data: currentUser,
     });
   }
 

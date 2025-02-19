@@ -7,10 +7,17 @@ import { BookingService } from './booking.service';
 import { UserService } from '../user/user.service';
 import { HomestayService } from '../homestay/homestay.service';
 import { Homestay } from 'src/database/entities/homestay.entity';
+import { Notification } from 'src/database/entities/notification.entity';
+import { NotificationService } from '../notification/notification.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User, Booking, Homestay])],
+  imports: [TypeOrmModule.forFeature([User, Booking, Homestay, Notification])],
   controllers: [BookingController],
-  providers: [BookingService, UserService, HomestayService],
+  providers: [
+    BookingService,
+    UserService,
+    HomestayService,
+    NotificationService,
+  ],
 })
 export class BookingModule {}

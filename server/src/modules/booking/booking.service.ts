@@ -4,20 +4,24 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
+import { InjectEntityManager, InjectRepository } from '@nestjs/typeorm';
 import { Booking } from 'src/database/entities/booking.entity';
-import { Repository } from 'typeorm';
+import { EntityManager, Repository } from 'typeorm';
 import { UserService } from '../user/user.service';
 import { HomestayService } from '../homestay/homestay.service';
 import { CreateBookingSchema, UpdateBookingSchema } from './booking.dto';
+import { NotificationService } from '../notification/notification.service';
 
 @Injectable()
 export class BookingService {
   constructor(
     @InjectRepository(Booking)
     private bookingRepository: Repository<Booking>,
+    @InjectEntityManager()
+    private entity: EntityManager,
     private userService: UserService,
     private homestayService: HomestayService,
+    private notificationService: NotificationService,
   ) {}
 
   async findAll() {
@@ -46,7 +50,6 @@ export class BookingService {
 
   async create(payload: CreateBookingSchema, userId: string) {
     const { bookedById, homestayId } = payload;
-
     if (bookedById !== userId) {
       throw new BadRequestException(
         'User cannot create booking with this bookedById ',
@@ -55,13 +58,25 @@ export class BookingService {
 
     const bookedBy = await this.userService.findThrowById(bookedById);
     const homestay = await this.homestayService.findThrowById(homestayId);
-    const booking = this.bookingRepository.create({
-      ...payload,
-      homestay,
-      bookedBy,
-    });
 
-    return this.bookingRepository.save(booking);
+    await this.entity.transaction(async (manager: EntityManager) => {
+      const booking = this.bookingRepository.create({
+        ...payload,
+        homestay,
+        bookedBy,
+      });
+      await manager.save(Booking, booking);
+
+      await this.notificationService.create(
+        {
+          title: 'Booking',
+          description: `Booking ${homestay.name}`,
+          userId: userId,
+        },
+        manager,
+      );
+      return booking;
+    });
   }
 
   async update(id: string, payload: UpdateBookingSchema, userId: string) {
