@@ -3,12 +3,18 @@ import { JwtService } from '@nestjs/jwt';
 import { compare, hash } from 'bcrypt';
 import { RegisterSchema } from './auth.dto';
 import { UserService } from '../user/user.service';
+import { NotificationService } from '../notification/notification.service';
+import { EntityManager } from 'typeorm';
+import { InjectEntityManager } from '@nestjs/typeorm';
 
 @Injectable()
 export class AuthService {
   constructor(
+    @InjectEntityManager()
+    private entity: EntityManager,
     private userService: UserService,
     private jwtService: JwtService,
+    private notification: NotificationService,
   ) {}
 
   async comparePassword(password: string, encryptedPassword: string) {
@@ -53,10 +59,17 @@ export class AuthService {
   }
 
   async register(payload: RegisterSchema) {
-    const encryptedPassword = await this.hashPassword(payload.password);
-    return this.userService.create({
-      ...payload,
-      password: encryptedPassword,
+    await this.entity.transaction(async (manager: EntityManager) => {
+      const user = await this.userService.create(payload, manager);
+      await this.notification.create(
+        {
+          title: 'Hallo',
+          description: 'Welcome to staycation 🏝️',
+          userId: user.id,
+        },
+        manager,
+      );
+      return user;
     });
   }
 }

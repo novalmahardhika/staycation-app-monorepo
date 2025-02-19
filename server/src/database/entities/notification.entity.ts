@@ -14,5 +14,5 @@ export class Notification extends BaseEntity {
   isRead?: boolean;
 
   @ManyToOne(() => User, (user) => user.notifications)
-  user!: User;
+  user!: string | User;
 }

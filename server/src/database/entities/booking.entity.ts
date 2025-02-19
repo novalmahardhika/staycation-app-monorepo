@@ -42,8 +42,8 @@ export class Booking extends BaseEntity {
   detail?: DetailBooking | null;
 
   @ManyToOne(() => User, (user) => user.bookings)
-  bookedBy!: User;
+  bookedBy!: string | User;
 
   @ManyToOne(() => Homestay, (homestay) => homestay.bookings)
-  homestay!: Homestay;
+  homestay!: string | Homestay;
 }

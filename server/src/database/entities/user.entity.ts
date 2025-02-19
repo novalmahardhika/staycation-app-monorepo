@@ -33,8 +33,8 @@ export class User extends BaseEntity {
   address?: string | null;
 
   @OneToMany(() => Booking, (booking) => booking.bookedBy)
-  bookings?: Booking[];
+  bookings?: string | Booking[];
 
   @OneToMany(() => Notification, (notification) => notification.user)
-  notifications?: Notification[];
+  notifications?: string | Notification[];
 }

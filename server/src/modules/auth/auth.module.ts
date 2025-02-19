@@ -6,10 +6,12 @@ import { AuthService } from './auth.service';
 import { JwtModule } from '@nestjs/jwt';
 import { UserService } from '../user/user.service';
 import { AuthGuard } from 'src/common/guards/auth.guard';
+import { Notification } from 'src/database/entities/notification.entity';
+import { NotificationService } from '../notification/notification.service';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([User]),
+    TypeOrmModule.forFeature([User, Notification]),
     JwtModule.register({
       secret: 'secret',
       global: true,
@@ -24,6 +26,7 @@ import { AuthGuard } from 'src/common/guards/auth.guard';
     },
     AuthService,
     UserService,
+    NotificationService,
   ],
 })
 export class AuthModule {}

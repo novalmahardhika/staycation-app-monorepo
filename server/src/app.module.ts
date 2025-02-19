@@ -6,6 +6,7 @@ import { HomestayModule } from './modules/homestay/homestay.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { BookingModule } from './modules/booking/booking.module';
 import { PaymentModule } from './modules/payment/payment.module';
+import { NotificationModule } from './modules/notification/notification.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { PaymentModule } from './modules/payment/payment.module';
     AuthModule,
     BookingModule,
     PaymentModule,
+    NotificationModule,
   ],
   controllers: [],
   providers: [],

@@ -8,5 +8,5 @@ export class Category extends BaseEntity {
   name!: string;
 
   @OneToMany(() => Homestay, (homestay) => homestay.category)
-  homestays!: Homestay[];
+  homestays!: string | Homestay[];
 }
