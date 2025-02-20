@@ -17,7 +17,7 @@ type InputProps = InputHTMLAttributes<HTMLInputElement>
 type InputFieldProps<T extends FieldValues> = {
   control: Control<T>
   name: Path<T>
-  label: string
+  label?: string
   description?: string
 } & InputProps
 
@@ -34,7 +34,7 @@ export function InputField<T extends FieldValues>({
       name={name}
       render={({ field }) => (
         <FormItem>
-          <FormLabel>{label}</FormLabel>
+          {label && <FormLabel>{label}</FormLabel>}
           <FormControl>
             <Input {...field} {...inputProps} />
           </FormControl>

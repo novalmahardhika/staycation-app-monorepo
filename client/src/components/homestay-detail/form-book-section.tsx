@@ -12,6 +12,10 @@ import { Button } from '../ui/button'
 import { Minus, Plus } from 'lucide-react'
 import { add, differenceInDays, sub } from 'date-fns'
 import { useEffect } from 'react'
+import { toast } from 'sonner'
+import { useNavigate, useParams } from 'react-router'
+import { useAuth } from '@/hooks/use-auth'
+import { useBookingMutation } from '@/hooks/query/useMutation/use-booking-mutation'
 
 type FormBookSectionProps = {
   price: number
@@ -19,12 +23,23 @@ type FormBookSectionProps = {
 
 export default function FormBookSection({ price }: FormBookSectionProps) {
   const form = useZodForm(bookingSchema, bookingDefaultValue)
+  const { user } = useAuth()
+  const { id: homestayId } = useParams<{ id: string }>()
+  const navigate = useNavigate()
 
   const date = form.watch('date')
   const startDate = form.watch('date')?.from
   const endDate = form.watch('date')?.to
   const totalPrice = form.watch('totalPrice')
   const totalDuration = form.watch('totalDuration')
+
+  useEffect(() => {
+    form.reset({
+      ...bookingDefaultValue,
+      bookedById: user?.id,
+      homestayId: homestayId,
+    })
+  }, [form, homestayId, user?.id])
 
   useEffect(() => {
     if (!startDate || !endDate) {
@@ -63,8 +78,29 @@ export default function FormBookSection({ price }: FormBookSectionProps) {
     form.setValue('date', { ...date, to: add(endDate, { days: 1 }) })
   }
 
+  const createBookingMutation = useBookingMutation({
+    onSuccess: (data) => {
+      toast.success('Booking Success')
+      navigate(`/bookings/${data.data.id}`)
+    },
+    onError: () => {
+      toast.error('Booking Fail, something went wrong')
+    },
+  })
+
   const onSubmitHandler = (value: BookingSchema) => {
-    console.log(value)
+    const { date, ...rest } = value
+
+    if (!date.from || !date.to) {
+      toast.error('Please pick your booking date')
+      return
+    }
+    const payload = {
+      ...rest,
+      startDate: date.from,
+      endDate: date.to,
+    }
+    createBookingMutation.mutate(payload)
   }
 
   return (
@@ -125,7 +161,24 @@ export default function FormBookSection({ price }: FormBookSectionProps) {
                 {totalDuration}
               </span>
             </span>
+
             <Button className='w-full'>Continue to Book</Button>
+
+            <InputField
+              control={form.control}
+              name='bookedById'
+              className='hidden'
+            />
+            <InputField
+              control={form.control}
+              name='status'
+              className='hidden'
+            />
+            <InputField
+              control={form.control}
+              name='homestayId'
+              className='hidden'
+            />
           </form>
         </Form>
       </CardContent>

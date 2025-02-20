@@ -1,7 +1,19 @@
 import { z } from 'zod'
 
+export const statusBooking = [
+  'NEW',
+  'PROGRESS',
+  'PENDING',
+  'FINISH',
+  'EXPIRED',
+  'CANCEL',
+] as const
+
 // booking date schema
 export const bookingSchema = z.object({
+  bookedById: z.string().uuid(),
+  homestayId: z.string().uuid(),
+  status: z.enum(statusBooking),
   date: z.object({
     from: z.date().optional(),
     to: z.date().optional(),
@@ -13,6 +25,9 @@ export const bookingSchema = z.object({
 export type BookingSchema = z.infer<typeof bookingSchema>
 
 export const bookingDefaultValue: BookingSchema = {
+  bookedById: '',
+  homestayId: '',
+  status: 'NEW',
   date: {
     from: undefined,
     to: undefined,

@@ -20,10 +20,10 @@ function App() {
         <Route path='homestays/:id' element={<HomestayDetailPage />} />
       </Route>
 
-      <Route path='/booking' element={<BookingLayout />}>
-        <Route index element={<BookingPage />} />
-        <Route path='payment' element={<BookingPaymentPage />} />
-        <Route path='success' element={<BookingSuccessPage />} />
+      <Route path='/bookings' element={<BookingLayout />}>
+        <Route path=':id' element={<BookingPage />} />
+        <Route path=':id/payment' element={<BookingPaymentPage />} />
+        <Route path=':id/success' element={<BookingSuccessPage />} />
       </Route>
 
       <Route element={<AuthLayout />}>
