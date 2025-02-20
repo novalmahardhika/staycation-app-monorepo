@@ -3,7 +3,7 @@ import { useHomestayQuery } from '@/hooks/query/useQuery/use-homestay-query'
 
 export default function HotelListSection() {
   const { data: items } = useHomestayQuery()
-  const homestays = items?.data.slice(0, 10) || []
+  const homestays = items?.data.slice(11, 20) || []
 
   return (
     <section className='grid gap-5'>

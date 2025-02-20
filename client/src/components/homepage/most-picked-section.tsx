@@ -12,15 +12,9 @@ export default function MostPickedSection() {
       <h2 className='title-section'>Most Picked</h2>
       <div className='grid gap-6 md:grid-cols-3'>
         {homestays.map((item, index) => {
-          const props = {
-            ...item,
-            href: `/homestays/${item.id}`,
-            city: item.address.city,
-            country: item.address.country,
-          }
           return (
             <CardItem
-              {...props}
+              {...item}
               key={`most-picked-${index}`}
               className={cn({
                 'h-44 md:h-full md:row-span-1 md:col-span-2 lg:row-span-2 lg:col-span-1':
@@ -36,21 +30,21 @@ export default function MostPickedSection() {
 }
 
 type CardItemProps = {
-  image: string
+  id: string
+  images: string[]
   name: string
   price: number
   country: string
   city: string
   className?: string
-  href: string
 }
 
 // prettier-ignore
-function CardItem({image, className,  name, country, city, price, href }: CardItemProps) {
+function CardItem({images, className,  name, country, city, price, id }: CardItemProps) {
   return (
     <article className={cn('relative overflow-hidden rounded-md h-52 shadow-md group', className)}>
       <img
-        src={image}
+        src={images[0]}
         alt={name}
         className='absolute object-cover w-full h-full duration-200 -z-50 group-hover:scale-110'
       />
@@ -59,7 +53,7 @@ function CardItem({image, className,  name, country, city, price, href }: CardIt
           {formatCurrency(price)} 
         </span> per Night 
       </span>
-      <Link to={href} className='flex flex-col justify-end h-full p-4 text-white'>
+      <Link to={`/homestays/${id}`} className='flex flex-col justify-end h-full p-4 text-white'>
         <h3 className='text-sm md:text-base'>{name}</h3>
         <span className='text-xs md:text-sm'>{`${city}, ${country}`}</span>
       </Link>

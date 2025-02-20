@@ -18,12 +18,7 @@ export default function CarouselListItem({ items }: CarouselListItemProps) {
     <Carousel className='min-w-0'>
       <CarouselContent>
         {items.map((item, index) => {
-          const props = {
-            ...item,
-            city: item.address.city,
-            country: item.address.country,
-          }
-          return <CustomCarouselItem {...props} key={`${item.id}-${index}`} />
+          return <CustomCarouselItem {...item} key={`${item.id}-${index}`} />
         })}
       </CarouselContent>
       <div className='absolute flex justify-end w-full mt-5 space-x-3'>
@@ -36,7 +31,7 @@ export default function CarouselListItem({ items }: CarouselListItemProps) {
 
 type CustomCarouselItemProps = {
   id: string
-  image: string
+  images: string[]
   name: string
   city: string
   country: string
@@ -46,7 +41,7 @@ type CustomCarouselItemProps = {
 function CustomCarouselItem({
   id,
   name,
-  image,
+  images,
   city,
   country,
   isPopular,
@@ -60,7 +55,7 @@ function CustomCarouselItem({
       <Card className='h-full overflow-hidden border-none rounded-md shadow-none group'>
         <div className='relative w-full h-32 overflow-hidden rounded-md'>
           <img
-            src={image}
+            src={images[0]}
             className='absolute object-cover w-full h-full duration-200 group-hover:scale-105'
             alt={name}
           />

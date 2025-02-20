@@ -21,15 +21,15 @@ export default function HomestayDetailPage() {
 
   if (!data) return
 
-  const { name, address, detail, price } = data.data
-  const { city, country } = address
+  const { name, price, city, country, images, description, facilities } =
+    data.data
 
   return (
     <section className='space-y-8'>
       <HeaderDetailHomestay name={name} city={city} country={country} />
-      <ImageDetailSection images={detail.images} />
+      <ImageDetailSection images={images} />
       <section className='grid grid-cols-3'>
-        <DescriptionSection description={detail.description} />
+        <DescriptionSection description={description} facilities={facilities} />
         <FormBookSection price={price} />
       </section>
       <SimilarPlaceSection />
