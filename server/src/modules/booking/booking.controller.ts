@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Delete,
@@ -37,10 +38,38 @@ export class BookingController {
     @Res() res: Response,
   ) {
     const { id: userId } = user;
+    const { bookedById } = body;
+
+    if (bookedById !== userId) {
+      throw new BadRequestException(
+        'User cannot create booking with this bookedById',
+      );
+    }
     const booking = await this.bookingService.createTransaction(body, userId);
     return res.status(HttpStatus.CREATED).json({
       status: 'CREATED',
       message: 'Create booking success',
+      data: booking,
+    });
+  }
+
+  @Get('me')
+  async getMe(@ReqUser() user: ReqUser, @Res() res: Response) {
+    const { id: userId } = user;
+    const bookings = await this.bookingService.findManyByUserId(userId);
+    return res.status(HttpStatus.OK).json({
+      status: 'OK',
+      message: 'Get all bookings success',
+      data: bookings,
+    });
+  }
+
+  @Get(':id')
+  async getById(@Param('id') id: string, @Res() res: Response) {
+    const booking = await this.bookingService.findThrowById(id);
+    return res.status(HttpStatus.OK).json({
+      status: 'OK',
+      message: 'Get booking success',
       data: booking,
     });
   }
@@ -71,17 +100,6 @@ export class BookingController {
     return res.status(HttpStatus.OK).json({
       status: 'OK',
       message: 'Delete booking success',
-    });
-  }
-
-  @Get('me')
-  async getMe(@ReqUser() user: ReqUser, @Res() res: Response) {
-    const { id: userId } = user;
-    const bookings = await this.bookingService.findManyByUserId(userId);
-    return res.status(HttpStatus.OK).json({
-      status: 'OK',
-      message: 'Get all bookings success',
-      data: bookings,
     });
   }
 }

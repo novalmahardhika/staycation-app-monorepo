@@ -1,5 +1,4 @@
 import {
-  BadRequestException,
   ConflictException,
   ForbiddenException,
   Injectable,
@@ -44,7 +43,10 @@ export class BookingService {
   }
 
   async findThrowById(id: string) {
-    const booking = await this.bookingRepository.findOneBy({ id });
+    const booking = await this.bookingRepository.findOne({
+      where: { id },
+      relations: ['payment'],
+    });
     if (!booking) {
       throw new NotFoundException('Booking not found');
     }
@@ -106,13 +108,6 @@ export class BookingService {
 
   async createTransaction(payload: CreateBookingSchema, userId: string) {
     const { bookedById, homestayId } = payload;
-
-    if (bookedById !== userId) {
-      throw new BadRequestException(
-        'User cannot create booking with this bookedById',
-      );
-    }
-
     const bookedBy = await this.userService.findThrowById(bookedById);
     const homestay = await this.homestayService.findThrowById(homestayId);
     await this.checkAlreadyBooking(bookedBy.id, homestay.id);
