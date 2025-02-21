@@ -39,7 +39,7 @@ export class Homestay extends BaseEntity {
   facilities!: Facility[];
 
   @OneToMany(() => Booking, (booking) => booking.homestay)
-  bookings?: string | Booking[];
+  bookings?: Booking[];
 
   @ManyToOne(() => Category, (category) => category.homestays)
   category!: string | Category;

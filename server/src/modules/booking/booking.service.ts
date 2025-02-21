@@ -12,6 +12,7 @@ import { UserService } from '../user/user.service';
 import { HomestayService } from '../homestay/homestay.service';
 import { CreateBookingSchema, UpdateBookingSchema } from './booking.dto';
 import { NotificationService } from '../notification/notification.service';
+import { PaymentService } from '../payment/payment.service';
 
 @Injectable()
 export class BookingService {
@@ -21,6 +22,7 @@ export class BookingService {
     @InjectEntityManager()
     private entity: EntityManager,
     private userService: UserService,
+    private paymentService: PaymentService,
     private homestayService: HomestayService,
     private notificationService: NotificationService,
   ) {}
@@ -49,37 +51,14 @@ export class BookingService {
     return booking;
   }
 
-  async create(payload: CreateBookingSchema, userId: string) {
-    const { bookedById, homestayId } = payload;
+  async create(payload: CreateBookingSchema, manager?: EntityManager) {
+    const booking = manager
+      ? manager.create(Booking, payload)
+      : this.bookingRepository.create(payload);
 
-    if (bookedById !== userId) {
-      throw new BadRequestException(
-        'User cannot create booking with this bookedById',
-      );
-    }
-
-    const bookedBy = await this.userService.findThrowById(bookedById);
-    const homestay = await this.homestayService.findThrowById(homestayId);
-    await this.checkAlreadyBooking(bookedBy.id, homestay.id);
-
-    await this.entity.transaction(async (manager: EntityManager) => {
-      const booking = this.bookingRepository.create({
-        ...payload,
-        homestay,
-        bookedBy,
-      });
-      await manager.save(Booking, booking);
-
-      await this.notificationService.create(
-        {
-          title: 'Booking',
-          description: `Booking ${homestay.name}`,
-          userId: userId,
-        },
-        manager,
-      );
-      return booking;
-    });
+    return manager
+      ? await manager.save(booking)
+      : await this.bookingRepository.save(booking);
   }
 
   async update(id: string, payload: UpdateBookingSchema, userId: string) {
@@ -123,5 +102,59 @@ export class BookingService {
       throw new ConflictException('Already booking this homestay');
     }
     return booking;
+  }
+
+  async createTransaction(payload: CreateBookingSchema, userId: string) {
+    const { bookedById, homestayId } = payload;
+
+    if (bookedById !== userId) {
+      throw new BadRequestException(
+        'User cannot create booking with this bookedById',
+      );
+    }
+
+    const bookedBy = await this.userService.findThrowById(bookedById);
+    const homestay = await this.homestayService.findThrowById(homestayId);
+    await this.checkAlreadyBooking(bookedBy.id, homestay.id);
+
+    const data = await this.entity.transaction(
+      async (manager: EntityManager) => {
+        const payloadBook = {
+          ...payload,
+          bookedBy: bookedBy.id,
+          homestay: homestay.id,
+          detail: {
+            firstName: bookedBy.firstName,
+            lastName: bookedBy.lastName,
+            email: bookedBy.email,
+            phone: bookedBy.phone,
+          },
+        };
+        const booking = await this.create(payloadBook, manager);
+
+        const payloadPayment = {
+          amount: booking.totalPrice,
+          currency: 'usd',
+          bookingId: booking.id,
+        };
+        const payment = await this.paymentService.create(
+          payloadPayment,
+          manager,
+        );
+
+        const payloadNotify = {
+          title: 'Booking',
+          description: `Booking ${homestay.name}`,
+          userId: userId,
+        };
+        await this.notificationService.create(payloadNotify, manager);
+
+        return {
+          id: booking.id,
+          clientSecret: payment.clientSecret,
+        };
+      },
+    );
+    return data;
   }
 }

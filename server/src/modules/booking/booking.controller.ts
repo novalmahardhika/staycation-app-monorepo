@@ -37,10 +37,11 @@ export class BookingController {
     @Res() res: Response,
   ) {
     const { id: userId } = user;
-    await this.bookingService.create(body, userId);
+    const booking = await this.bookingService.createTransaction(body, userId);
     return res.status(HttpStatus.CREATED).json({
       status: 'CREATED',
       message: 'Create booking success',
+      data: booking,
     });
   }
 

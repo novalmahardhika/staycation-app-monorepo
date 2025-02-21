@@ -9,13 +9,18 @@ import { HomestayService } from '../homestay/homestay.service';
 import { Homestay } from 'src/database/entities/homestay.entity';
 import { Notification } from 'src/database/entities/notification.entity';
 import { NotificationService } from '../notification/notification.service';
+import { PaymentService } from '../payment/payment.service';
+import { Payment } from 'src/database/entities/payment.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User, Booking, Homestay, Notification])],
+  imports: [
+    TypeOrmModule.forFeature([User, Booking, Homestay, Notification, Payment]),
+  ],
   controllers: [BookingController],
   providers: [
     BookingService,
     UserService,
+    PaymentService,
     HomestayService,
     NotificationService,
   ],

@@ -1,7 +1,8 @@
 import { BaseEntity } from './base.entity';
-import { Column, Entity, ManyToOne } from 'typeorm';
+import { Column, Entity, ManyToOne, OneToOne } from 'typeorm';
 import { Homestay } from './homestay.entity';
 import { User } from './user.entity';
+import { Payment } from './payment.entity';
 
 export const statusBooking = [
   'NEW',
@@ -40,6 +41,11 @@ export class Booking extends BaseEntity {
 
   @Column({ type: 'jsonb', nullable: true })
   detail?: DetailBooking | null;
+
+  @OneToOne(() => Payment, (payment) => payment.booking, {
+    cascade: true,
+  })
+  payment!: string | User;
 
   @ManyToOne(() => User, (user) => user.bookings)
   bookedBy!: string | User;
