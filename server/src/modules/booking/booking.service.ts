@@ -45,7 +45,7 @@ export class BookingService {
   async findThrowById(id: string) {
     const booking = await this.bookingRepository.findOne({
       where: { id },
-      relations: ['payment'],
+      relations: ['payment', 'homestay'],
     });
     if (!booking) {
       throw new NotFoundException('Booking not found');
