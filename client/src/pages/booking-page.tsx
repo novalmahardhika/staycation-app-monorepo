@@ -2,16 +2,21 @@ import { FormBookingBiodata } from '@/components/booking/form-booking-biodata'
 import { Button } from '@/components/ui/button'
 import { Form } from '@/components/ui/form'
 import { Stepper } from '@/components/ui/stepper'
-import { useAuth } from '@/hooks/use-auth'
+import { useUpdateBookingMutation } from '@/hooks/query/useMutation/use-booking-mutation'
+import { useBookingIdQuery } from '@/hooks/query/useQuery/use-booking-query'
 import { useZodForm } from '@/hooks/use-zod-form'
 import {
   BookingBiodataSchema,
   bookingBiodataSchema,
 } from '@/schemas/booking-schema'
 import { useEffect } from 'react'
+import { useNavigate, useParams } from 'react-router'
+import { toast } from 'sonner'
 
 export default function BookingPage() {
-  const { user } = useAuth()
+  const { id } = useParams<{ id: string }>()
+  const navigate = useNavigate()
+
   const form = useZodForm(bookingBiodataSchema, {
     firstName: '',
     lastName: '',
@@ -19,17 +24,40 @@ export default function BookingPage() {
     phone: '',
   })
 
+  const currentBooking = useBookingIdQuery(id as string).data?.data
+
+  const currentBiodata = currentBooking?.detail
+
   useEffect(() => {
     form.reset({
-      firstName: user?.firstName || '',
-      lastName: user?.lastName || '',
-      email: user?.email || '',
-      phone: user?.phone || '',
+      firstName: currentBiodata?.firstName || '',
+      lastName: currentBiodata?.lastName || '',
+      email: currentBiodata?.email || '',
+      phone: currentBiodata?.phone || '',
     })
-  }, [form, user])
+  }, [
+    currentBiodata?.email,
+    currentBiodata?.firstName,
+    currentBiodata?.lastName,
+    currentBiodata?.phone,
+    form,
+  ])
+
+  const updateBookingMutation = useUpdateBookingMutation(id as string, {
+    onSuccess: () => {
+      toast.success('Fill biodata success')
+      navigate(`/bookings/${id}/payments`)
+    },
+    onError: () => {
+      toast.error('Something went wrong')
+    },
+  })
 
   const onSubmitHandler = (value: BookingBiodataSchema) => {
-    console.log(value)
+    const payload = {
+      detail: value,
+    }
+    updateBookingMutation.mutate(payload)
   }
 
   return (

@@ -1,9 +1,10 @@
 import { User } from './auth-type'
 import { BaseType } from './base-type'
 import { HomestayDetail } from './homestay-type'
+import { Payment } from './payment-type'
 
-type BookingDetail = {
-  fistName: string
+type Detail = {
+  firstName: string
   lastName?: string
   email: string
   phone: string
@@ -16,7 +17,12 @@ export type Booking = BaseType & {
   totalPrice: number
   bookedBy: User
   homestay: HomestayDetail
-  detail?: BookingDetail | null
+  detail?: Detail | null
+}
+
+export type BookingDetail = Booking & {
+  payment: Payment
+  homestay: HomestayDetail
 }
 
 export type BookingApi = {

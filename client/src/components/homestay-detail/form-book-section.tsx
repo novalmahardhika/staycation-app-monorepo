@@ -16,6 +16,7 @@ import { toast } from 'sonner'
 import { useNavigate, useParams } from 'react-router'
 import { useAuth } from '@/hooks/use-auth'
 import { useBookingMutation } from '@/hooks/query/useMutation/use-booking-mutation'
+import { useLocalStorage } from '@/hooks/use-local-storage'
 
 type FormBookSectionProps = {
   price: number
@@ -24,6 +25,7 @@ type FormBookSectionProps = {
 export default function FormBookSection({ price }: FormBookSectionProps) {
   const form = useZodForm(bookingSchema, bookingDefaultValue)
   const { user } = useAuth()
+  const { setItem } = useLocalStorage()
   const { id: homestayId } = useParams<{ id: string }>()
   const navigate = useNavigate()
 
@@ -81,6 +83,7 @@ export default function FormBookSection({ price }: FormBookSectionProps) {
   const createBookingMutation = useBookingMutation({
     onSuccess: (data) => {
       toast.success('Booking Success')
+      setItem('clientSecret', data.data.clientSecret)
       navigate(`/bookings/${data.data.id}`)
     },
     onError: () => {
@@ -90,7 +93,6 @@ export default function FormBookSection({ price }: FormBookSectionProps) {
 
   const onSubmitHandler = (value: BookingSchema) => {
     const { date, ...rest } = value
-
     if (!date.from || !date.to) {
       toast.error('Please pick your booking date')
       return
@@ -163,22 +165,6 @@ export default function FormBookSection({ price }: FormBookSectionProps) {
             </span>
 
             <Button className='w-full'>Continue to Book</Button>
-
-            <InputField
-              control={form.control}
-              name='bookedById'
-              className='hidden'
-            />
-            <InputField
-              control={form.control}
-              name='status'
-              className='hidden'
-            />
-            <InputField
-              control={form.control}
-              name='homestayId'
-              className='hidden'
-            />
           </form>
         </Form>
       </CardContent>

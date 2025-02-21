@@ -44,13 +44,24 @@ export const bookingBiodataSchema = z.object({
     .max(50, { message: 'firstName max 50 character' }),
   lastName: z
     .string()
-    .min(3, { message: 'lastName must be at least 3 character' })
     .max(50, { message: 'lastName max 50 character' })
-    .trim(),
+    .trim()
+    .optional(),
   email: z
     .string()
     .email({ message: 'please enter a valid email address in the format' }),
-  phone: z.string(),
+  phone: z
+    .string()
+    .min(12, { message: 'Please input your phone number' })
+    .trim(),
 })
 
 export type BookingBiodataSchema = z.infer<typeof bookingBiodataSchema>
+
+// booking update schema
+export const updateBookingSchema = z.object({
+  ...bookingSchema.partial().shape,
+  detail: bookingBiodataSchema.partial(),
+})
+
+export type UpdateBookingSchema = z.infer<typeof updateBookingSchema>

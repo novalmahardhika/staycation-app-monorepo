@@ -2,7 +2,7 @@ import { Homestay, HomestayDetail } from '@/types/homestay-type'
 import { api, ResponseApi } from '@/utils/api'
 import { useQuery, UseQueryOptions } from '@tanstack/react-query'
 
-type OptionType<T> = Omit<UseQueryOptions<T>, 'queryKey' | 'queryFn'>
+export type OptionType<T> = Omit<UseQueryOptions<T>, 'queryKey' | 'queryFn'>
 
 export function useHomestayQuery(
   options?: OptionType<ResponseApi<Homestay[]>>

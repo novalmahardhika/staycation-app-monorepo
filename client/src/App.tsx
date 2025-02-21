@@ -22,7 +22,7 @@ function App() {
 
       <Route path='/bookings' element={<BookingLayout />}>
         <Route path=':id' element={<BookingPage />} />
-        <Route path=':id/payment' element={<BookingPaymentPage />} />
+        <Route path=':id/payments' element={<BookingPaymentPage />} />
         <Route path=':id/success' element={<BookingSuccessPage />} />
       </Route>
 
