@@ -11,7 +11,6 @@ import { UserService } from '../user/user.service';
 import { HomestayService } from '../homestay/homestay.service';
 import { CreateBookingSchema, UpdateBookingSchema } from './booking.dto';
 import { NotificationService } from '../notification/notification.service';
-import { PaymentService } from '../payment/payment.service';
 
 @Injectable()
 export class BookingService {
@@ -21,7 +20,6 @@ export class BookingService {
     @InjectEntityManager()
     private entity: EntityManager,
     private userService: UserService,
-    private paymentService: PaymentService,
     private homestayService: HomestayService,
     private notificationService: NotificationService,
   ) {}
@@ -127,16 +125,6 @@ export class BookingService {
         };
         const booking = await this.create(payloadBook, manager);
 
-        const payloadPayment = {
-          amount: booking.totalPrice,
-          currency: 'usd',
-          bookingId: booking.id,
-        };
-        const payment = await this.paymentService.create(
-          payloadPayment,
-          manager,
-        );
-
         const payloadNotify = {
           title: 'Booking',
           description: `Booking ${homestay.name}`,
@@ -144,10 +132,7 @@ export class BookingService {
         };
         await this.notificationService.create(payloadNotify, manager);
 
-        return {
-          id: booking.id,
-          clientSecret: payment.clientSecret,
-        };
+        return booking;
       },
     );
     return data;
