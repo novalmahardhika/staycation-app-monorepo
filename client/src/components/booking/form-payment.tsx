@@ -29,7 +29,7 @@ export default function FormPayment({ ...props }: FormPaymentProps) {
       })
 
       if (error) {
-        toast.error(`${error.message}-after payment`)
+        toast.error(error.message)
         return
       }
     },

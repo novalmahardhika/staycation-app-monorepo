@@ -30,7 +30,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       fetchUser()
     }
 
-    return () => setUser(null)
+    // return () => setUser(null)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token])
 
@@ -73,6 +73,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           Authorization: `Bearer ${token}`,
         },
       })
+
       setUser(res.data)
     } catch (error) {
       console.log(error)
