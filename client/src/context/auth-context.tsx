@@ -1,7 +1,7 @@
 import { useLocalStorage } from '@/hooks/use-local-storage'
 import { SignInSchema } from '@/schemas/auth-schema'
 import { AuthSignIn, User } from '@/types/auth-type'
-import { api, ResponseApi } from '@/utils/api'
+import { api, ApplicationError, ResponseApi } from '@/utils/api'
 import { createContext, ReactNode, useEffect, useState } from 'react'
 import { toast } from 'sonner'
 
@@ -29,8 +29,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (token) {
       fetchUser()
     }
-
-    // return () => setUser(null)
+    return () => setUser(null)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token])
 
@@ -49,15 +48,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       error: (err) => `Login failed: ${err.message}`,
     })
 
-    try {
-      const res = await response
-      const accessToken = res.data.accessToken
-      setToken(accessToken)
-      setItem('token', accessToken)
-    } catch (error) {
-      console.log(error)
-    }
+    const res = await response
+    const accessToken = res.data.accessToken
+    setToken(accessToken)
+    setItem('token', accessToken)
   }
+
   const signOut = () => {
     removeItem('token')
     setToken(null)
@@ -75,8 +71,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       })
 
       setUser(res.data)
-    } catch (error) {
-      console.log(error)
+    } catch (error: unknown) {
+      const appError = error as ApplicationError
+      if (appError.statusCode === 401) {
+        signOut()
+        return
+      }
+      console.log('Fail to get data current user')
     }
   }
 

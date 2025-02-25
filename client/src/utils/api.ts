@@ -4,7 +4,7 @@ export type ResponseApi<T> = {
   data: T
 }
 
-class ApplicationError extends Error {
+export class ApplicationError extends Error {
   statusCode: number
   constructor(message: string, statusCode: number) {
     super(message)
@@ -13,7 +13,7 @@ class ApplicationError extends Error {
 }
 
 export async function api<T>(path: string, options?: RequestInit): Promise<T> {
-  const baseUrl = 'http://localhost:8080'
+  const baseUrl = import.meta.env.VITE_BASE_URL
   const res = await fetch(`${baseUrl}${path}`, options)
 
   if (!res.ok) {
