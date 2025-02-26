@@ -23,7 +23,7 @@ export default function Navbar() {
         <Logo href='/' />
         <span className='items-center hidden h-full space-x-6 md:flex'>
           <ItemNavbar href='#'>Home</ItemNavbar>
-          <ItemNavbar href='#'>Browse by</ItemNavbar>
+          <ItemNavbar href='#'>Browse</ItemNavbar>
           <ItemNavbar href='#'>Stories</ItemNavbar>
           <ItemNavbar href='#'>Agents</ItemNavbar>
 

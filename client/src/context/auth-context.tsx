@@ -8,7 +8,7 @@ import { toast } from 'sonner'
 type AuthContextType = {
   user: User | null
   token: string | null
-  signIn: (payload: SignInSchema) => Promise<void>
+  signIn: (payload: SignInSchema) => void
   signOut: () => void
 }
 
@@ -33,7 +33,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token])
 
-  const signIn = async (payload: SignInSchema) => {
+  const signIn = (payload: SignInSchema) => {
     const response = api<ResponseApi<AuthSignIn>>('/auth/signIn', {
       method: 'POST',
       headers: {
@@ -44,14 +44,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     toast.promise(response, {
       loading: 'Loading...',
-      success: 'Login successful!',
+      success: (res) => {
+        const accessToken = res.data.accessToken
+        setToken(accessToken)
+        setItem('token', accessToken)
+        return 'Login successfully!'
+      },
       error: (err) => `Login failed: ${err.message}`,
     })
-
-    const res = await response
-    const accessToken = res.data.accessToken
-    setToken(accessToken)
-    setItem('token', accessToken)
   }
 
   const signOut = () => {
@@ -69,7 +69,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           Authorization: `Bearer ${token}`,
         },
       })
-
       setUser(res.data)
     } catch (error: unknown) {
       const appError = error as ApplicationError
@@ -77,7 +76,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         signOut()
         return
       }
-      console.log('Fail to get data current user')
+      console.log('Fail to get current user')
     }
   }
 
