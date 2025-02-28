@@ -8,19 +8,34 @@ import {
 import { Card } from './card'
 import { Homestay } from '@/types/homestay-type'
 import { useNavigate } from 'react-router'
+import { WrapperComponent } from '../wrapper-component'
+import { SkeletonListHomestay } from '../skeletons/skeleton-list-homestay'
 
 type CarouselListItemProps = {
   items: Homestay[]
+  isLoading: boolean
+  isError: boolean
 }
 
-export default function CarouselListItem({ items }: CarouselListItemProps) {
+export default function CarouselListItem({
+  items,
+  isLoading,
+  isError,
+}: CarouselListItemProps) {
   return (
     <Carousel className='min-w-0'>
-      <CarouselContent>
-        {items.map((item, index) => {
-          return <CustomCarouselItem {...item} key={`${item.id}-${index}`} />
-        })}
-      </CarouselContent>
+      <WrapperComponent
+        isLoading={isLoading}
+        isError={isError}
+        dataLength={items.length}
+        LoadingComponent={SkeletonListHomestay}
+      >
+        <CarouselContent>
+          {items.map((item, index) => {
+            return <CustomCarouselItem {...item} key={`${item.id}-${index}`} />
+          })}
+        </CarouselContent>
+      </WrapperComponent>
       <div className='absolute flex justify-end w-full mt-5 space-x-3'>
         <CarouselPrevious className='static rounded-md' />
         <CarouselNext className='static rounded-md' />
@@ -56,7 +71,7 @@ function CustomCarouselItem({
         <div className='relative w-full h-32 overflow-hidden rounded-md'>
           <img
             src={images[0]}
-            className='absolute object-cover w-full h-full duration-200 group-hover:scale-105'
+            className='absolute object-cover w-full h-full duration-200 bg-gray-200 group-hover:scale-105'
             alt={name}
           />
         </div>

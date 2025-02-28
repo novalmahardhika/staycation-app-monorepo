@@ -1,8 +1,14 @@
 import { Button } from '@/components/ui/button'
+import { cn } from '@/lib/utils'
 import { IconType } from '@/types/base-type'
 import { Camera, Luggage, MapPin } from 'lucide-react'
+import { useState } from 'react'
+import { Skeleton } from '../ui/skeleton'
 
 export default function HeroSection() {
+  const [loadImage, setLoadImage] = useState<boolean>(true)
+  console.log(loadImage)
+
   return (
     <section className='grid gap-6 lg:gap-10 md:grid-cols-2'>
       <div className='flex flex-col justify-center order-last space-y-6 md:max-w-xl md:space-y-2.5 lg:space-y-6 md:order-first'>
@@ -32,8 +38,20 @@ export default function HeroSection() {
 
       <div className='flex items-center justify-center md:justify-end'>
         <div className='flex md:justify-end max-w-[480px]'>
-          <img src='/src/assets/hero-staycation.png' alt='hero-image' />
+          <img
+            src='/src/assets/hero-staycation.png'
+            alt='hero-image'
+            className={cn({
+              hidden: loadImage === true,
+            })}
+            onLoad={() => setLoadImage(false)}
+          />
         </div>
+        <Skeleton
+          className={cn('w-full h-full max-w-[480px] rounded-md', {
+            hidden: loadImage === false,
+          })}
+        />
       </div>
     </section>
   )

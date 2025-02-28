@@ -76,3 +76,14 @@
 .title-section {
   @apply text-lg font-medium md:text-xl text-blue-950;
 }
+
+
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}

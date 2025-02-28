@@ -2,28 +2,37 @@ import { useHomestayQuery } from '@/hooks/query/useQuery/use-homestay-query'
 import { cn } from '@/lib/utils'
 import { formatCurrency } from '@/utils/helper'
 import { Link } from 'react-router'
+import { WrapperComponent } from '../wrapper-component'
+import { SkeletonMostPicked } from '../skeletons/skeleton-most-picked'
 
 export default function MostPickedSection() {
-  const { data: items } = useHomestayQuery()
+  const { data: items, isLoading, isError } = useHomestayQuery()
   const homestays = items?.data.slice(0, 5) || []
 
   return (
     <section className='grid gap-5'>
       <h2 className='title-section'>Most Picked</h2>
       <div className='grid gap-6 md:grid-cols-3'>
-        {homestays.map((item, index) => {
-          return (
-            <CardItem
-              {...item}
-              key={`most-picked-${index}`}
-              className={cn({
-                'h-44 md:h-full md:row-span-1 md:col-span-2 lg:row-span-2 lg:col-span-1':
-                  index === 0,
-                'h-44': index !== 0,
-              })}
-            />
-          )
-        })}
+        <WrapperComponent
+          isLoading={isLoading}
+          isError={isError}
+          dataLength={homestays.length}
+          LoadingComponent={SkeletonMostPicked}
+        >
+          {homestays.map((item, index) => {
+            return (
+              <CardItem
+                {...item}
+                key={`most-picked-${index}`}
+                className={cn({
+                  'h-44 md:h-full md:row-span-1 md:col-span-2 lg:row-span-2 lg:col-span-1':
+                    index === 0,
+                  'h-44': index !== 0,
+                })}
+              />
+            )
+          })}
+        </WrapperComponent>
       </div>
     </section>
   )
