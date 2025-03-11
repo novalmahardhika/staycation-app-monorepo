@@ -16,7 +16,7 @@ export function usePaymentMutation(
 ) {
   const { token } = useAuth()
   const mutationFn = (payload: CreatePaymentSchema) => {
-    return api<ResponseApi<PaymentApi>>('/payments', {
+    return api<PaymentApi>('/payments', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

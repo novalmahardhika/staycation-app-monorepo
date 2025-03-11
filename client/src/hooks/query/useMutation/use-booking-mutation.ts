@@ -18,7 +18,7 @@ export function useBookingMutation(
 ) {
   const { token } = useAuth()
   const mutationFn = (payload: NewBookingSchema) => {
-    return api<ResponseApi<BookingApi>>('/bookings', {
+    return api<BookingApi>('/bookings', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -43,7 +43,7 @@ export function useUpdateBookingMutation(
 ) {
   const { token } = useAuth()
   const mutationFn = (payload: UpdateBookingSchema) => {
-    return api<ResponseApi<BookingDetail>>(`/bookings/${id}`, {
+    return api<BookingDetail>(`/bookings/${id}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',

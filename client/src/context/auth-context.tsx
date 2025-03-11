@@ -1,7 +1,7 @@
 import { useLocalStorage } from '@/hooks/use-local-storage'
 import { SignInSchema } from '@/schemas/auth-schema'
 import { AuthSignIn, User } from '@/types/auth-type'
-import { api, ApplicationError, ResponseApi } from '@/utils/api'
+import { api, ApplicationError } from '@/utils/api'
 import { createContext, ReactNode, useEffect, useState } from 'react'
 import { toast } from 'sonner'
 
@@ -34,7 +34,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [token])
 
   const signIn = (payload: SignInSchema) => {
-    const response = api<ResponseApi<AuthSignIn>>('/auth/signIn', {
+    const response = api<AuthSignIn>('/auth/signIn', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -45,7 +45,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     toast.promise(response, {
       loading: 'Loading...',
       success: (res) => {
-        console.log(res)
         const accessToken = res.data.accessToken
         setToken(accessToken)
         setItem('token', accessToken)
@@ -64,7 +63,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const fetchUser = async () => {
     try {
-      const res = await api<ResponseApi<User>>('/users/me', {
+      const res = await api<User>('/users/me', {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,

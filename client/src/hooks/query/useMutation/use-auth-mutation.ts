@@ -7,7 +7,7 @@ export function useSignInMutation(
   options?: UseMutationOptions<ResponseApi<AuthSignIn>, unknown, SignInSchema>
 ) {
   const mutationFn = (payload: SignInSchema) => {
-    return api<ResponseApi<AuthSignIn>>('/auth/signIn', {
+    return api<AuthSignIn>('/auth/signIn', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -26,7 +26,7 @@ export function useSignUpMutation(
   options?: UseMutationOptions<ResponseApi<User>, unknown, SignUpSchema>
 ) {
   const mutationFn = (payload: SignInSchema) => {
-    return api<ResponseApi<User>>('/auth/signUp', {
+    return api<User>('/auth/signUp', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
