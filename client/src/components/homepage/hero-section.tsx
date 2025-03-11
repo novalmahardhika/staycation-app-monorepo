@@ -7,8 +7,6 @@ import { Skeleton } from '../ui/skeleton'
 
 export default function HeroSection() {
   const [loadImage, setLoadImage] = useState<boolean>(true)
-  console.log(loadImage)
-
   return (
     <section className='grid gap-6 lg:gap-10 md:grid-cols-2'>
       <div className='flex flex-col justify-center order-last space-y-6 md:max-w-xl md:space-y-2.5 lg:space-y-6 md:order-first'>

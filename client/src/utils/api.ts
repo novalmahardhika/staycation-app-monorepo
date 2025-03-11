@@ -13,24 +13,20 @@ export class ApplicationError extends Error {
 }
 
 export async function api<T>(path: string, options?: RequestInit): Promise<T> {
-  const baseUrl = import.meta.env.VITE_BASE_URL
-  const res = await fetch(`${baseUrl}${path}`, options)
-
-  if (!res.ok) {
-    const errorMessage = await getErrorMessage(res)
-    throw new ApplicationError(errorMessage, res.status)
-  }
-  const data: T = await res.json()
-  return data
-}
-
-async function getErrorMessage(response: Response) {
-  let message
   try {
-    const errorData = await response.json()
-    message = errorData.message || response.statusText
-  } catch {
-    message = response.statusText
+    const baseUrl = import.meta.env.VITE_BASE_URL
+    const res = await fetch(`${baseUrl}${path}`, options)
+
+    const data: ResponseApi<T> = await res.json()
+
+    if (!res.ok) {
+      throw new ApplicationError(data.message, res.status)
+    }
+
+    return data as T
+  } catch (error: unknown) {
+    if (error instanceof ApplicationError) throw error
+    if (error instanceof Error) throw new ApplicationError(error.message, 500)
+    throw new ApplicationError('An unknown error occurred', 500)
   }
-  return message
 }

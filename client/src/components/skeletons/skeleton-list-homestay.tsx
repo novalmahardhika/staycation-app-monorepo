@@ -11,7 +11,7 @@ export function SkeletonListHomestay({
   className,
 }: SkeletonListHomestayProps) {
   return (
-    <div className='grid gap-4 lg:grid-cols-5 '>
+    <div className='grid gap-4 mb-3 lg:grid-cols-5'>
       {Array.from({ length }).map((_, index) => (
         <div
           key={`skeleton-list-homestay-${index}`}

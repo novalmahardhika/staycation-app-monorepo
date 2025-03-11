@@ -45,6 +45,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     toast.promise(response, {
       loading: 'Loading...',
       success: (res) => {
+        console.log(res)
         const accessToken = res.data.accessToken
         setToken(accessToken)
         setItem('token', accessToken)
