@@ -3,6 +3,8 @@ import { SkeletonMostPicked } from '../skeletons/skeleton-most-picked'
 import { formatCurrency } from '@/utils/helper'
 import { cn } from '@/lib/utils'
 import { Link } from 'react-router'
+import { ErrorMessage } from '../error-message'
+import { EmptyMessage } from '../empty-data-message'
 
 export default function MostPickedItems() {
   const { data: items, isLoading, isError } = useHomestayQuery()
@@ -14,17 +16,17 @@ export default function MostPickedItems() {
 
   if (isError) {
     return (
-      <div className='p-3 font-medium text-center text-red-500 bg-red-100 rounded-md col-span-full'>
-        <h3>Something went wrong</h3>
-      </div>
+      <ErrorMessage className='col-span-full'>
+        Something went wrong
+      </ErrorMessage>
     )
   }
 
   if (homestays.length === 0) {
     return (
-      <div className='flex items-center justify-center p-3 font-medium text-center bg-gray-100 rounded-md col-span-full row-span-full'>
-        <h3>Data is Empty</h3>
-      </div>
+      <EmptyMessage className='col-span-full row-span-full'>
+        Data is Empty
+      </EmptyMessage>
     )
   }
 
