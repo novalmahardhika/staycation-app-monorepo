@@ -15,14 +15,14 @@ export default function MostPickedItems() {
   if (isError) {
     return (
       <div className='p-3 font-medium text-center text-red-500 bg-red-100 rounded-md col-span-full'>
-        Something went wrong
+        <h3>Something went wrong</h3>
       </div>
     )
   }
 
   if (homestays.length === 0) {
     return (
-      <div className='flex items-center justify-center p-3 text-center bg-gray-100 rounded-md col-span-full row-span-full'>
+      <div className='flex items-center justify-center p-3 font-medium text-center bg-gray-100 rounded-md col-span-full row-span-full'>
         <h3>Data is Empty</h3>
       </div>
     )

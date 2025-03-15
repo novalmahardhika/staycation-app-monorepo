@@ -1,18 +1,10 @@
-import CarouselListItem from '@/components/ui/carousel-list-item'
-import { useHomestayQuery } from '@/hooks/query/useQuery/use-homestay-query'
+import ApartmentListItems from './apartment-list-items'
 
 export default function ApartmentListSection() {
-  const { data: items, isLoading, isError } = useHomestayQuery()
-  const homestays = items?.data.slice(21, 30) || []
-
   return (
     <section className='grid gap-5'>
       <h2 className='title-section'>Apartments with kitchen set</h2>
-      <CarouselListItem
-        items={homestays}
-        isLoading={isLoading}
-        isError={isError}
-      />
+      <ApartmentListItems />
     </section>
   )
 }
